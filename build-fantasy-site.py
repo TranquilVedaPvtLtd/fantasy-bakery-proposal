@@ -283,10 +283,18 @@ def render_panel(panel: dict) -> str:
 
 
 def render_feature_buckets(buckets: list) -> str:
-    out = ['<div class="feature-buckets">']
+    total = sum(len(b.get("items", [])) for b in buckets)
+    out = [f'<div class="feature-buckets-meta"><span class="feature-buckets-total">{total}</span> features across <span class="feature-buckets-cat-count">{len(buckets)}</span> categories</div>']
+    out.append('<div class="feature-buckets">')
     for b in buckets:
+        items_count = len(b.get("items", []))
+        icon = b.get("icon", "&bull;")
         out.append('<div class="feature-bucket">')
+        out.append('<div class="feature-bucket-header">')
+        out.append(f'<div class="feature-bucket-icon">{icon}</div>')
         out.append(f'<div class="feature-bucket-name">{b.get("name", "")}</div>')
+        out.append(f'<div class="feature-bucket-count">{items_count}</div>')
+        out.append("</div>")
         items = "".join(f"<li>{x}</li>" for x in b.get("items", []))
         out.append(f"<ul>{items}</ul>")
         out.append("</div>")

@@ -722,54 +722,123 @@
 .deliverables li strong { color: var(--fb-ink) !important; }
 .deliverables li::before { background: var(--fb-gold) !important; }
 
-/* ---- Bucketed feature scope (chapter III) ---- */
+/* ---- Bucketed feature scope (chapter III) - elegant card grid ---- */
+.feature-buckets-meta {
+  margin: 28px auto 22px;
+  text-align: center;
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--fb-ink-mute);
+  padding-bottom: 22px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+}
+.feature-buckets-meta .feature-buckets-total,
+.feature-buckets-meta .feature-buckets-cat-count {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-size: 24px;
+  font-weight: 500;
+  color: #B8860B;
+  letter-spacing: 0;
+  text-transform: none;
+  vertical-align: -2px;
+  padding: 0 4px;
+}
 .feature-buckets {
-  margin-top: 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 28px;
+  margin: 0 0 12px;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px;
+}
+@media (max-width: 760px) {
+  .feature-buckets { grid-template-columns: 1fr; gap: 14px; }
 }
 .feature-bucket {
-  border-top: 1px solid rgba(212, 175, 55, 0.25);
-  padding-top: 18px;
+  background: linear-gradient(180deg, #FFFFFF 0%, #FFFAF4 100%);
+  border: 1px solid rgba(212, 175, 55, 0.25);
+  border-radius: 16px;
+  padding: 22px 24px 18px;
+  box-shadow: 0 4px 16px rgba(212, 175, 55, 0.06);
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+.feature-bucket:hover {
+  box-shadow: 0 8px 26px rgba(212, 175, 55, 0.14);
+  transform: translateY(-1px);
+}
+.feature-bucket-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.18);
+}
+.feature-bucket-icon {
+  font-size: 18px;
+  line-height: 1;
+  width: 38px;
+  height: 38px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, rgba(247,182,205,0.32), rgba(169,201,245,0.22));
+  border-radius: 10px;
+  flex-shrink: 0;
 }
 .feature-bucket-name {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(17px, 1.4vw, 19px);
+  font-weight: 500;
+  color: var(--fb-ink);
+  letter-spacing: 0;
+  text-transform: none;
+  margin: 0;
+  flex: 1;
+  line-height: 1.2;
+}
+.feature-bucket-count {
   font-family: "Inter", sans-serif;
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
   color: #B8860B;
-  margin-bottom: 14px;
+  letter-spacing: 0.04em;
+  background: rgba(212, 175, 55, 0.12);
+  padding: 4px 9px;
+  border-radius: 999px;
+  min-width: 22px;
+  text-align: center;
+  flex-shrink: 0;
 }
 .feature-bucket ul {
   list-style: none;
   padding: 0;
   margin: 0;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10px 28px;
-}
-@media (max-width: 700px) {
-  .feature-bucket ul { grid-template-columns: 1fr; }
 }
 .feature-bucket li {
   font-family: "Inter", sans-serif;
-  font-size: 14px;
+  font-size: 13px;
   line-height: 1.5;
-  color: var(--fb-ink-soft);
-  padding-left: 18px;
+  color: rgba(42, 42, 42, 0.78);
+  padding: 9px 0 9px 22px;
   position: relative;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.10);
 }
+.feature-bucket li:last-child { border-bottom: none; }
 .feature-bucket li::before {
   content: "";
   position: absolute;
   left: 0;
-  top: 9px;
-  width: 6px;
-  height: 6px;
+  top: 13px;
+  width: 14px;
+  height: 14px;
+  background: rgba(212, 175, 55, 0.18);
   border-radius: 50%;
-  background: var(--fb-gold);
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 12'><polyline points='3,6.5 5,8.5 9,4' fill='none' stroke='%23B8860B' stroke-width='1.8' stroke-linecap='round' stroke-linejoin='round'/></svg>");
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 9px 9px;
 }
 .feature-bucket li strong { color: var(--fb-ink); font-weight: 600; }
 
@@ -1599,7 +1668,7 @@
 
 <section class="block" data-block="3" id="panel-3"><div class="video-panel atmos"><video autoplay loop muted playsinline preload="auto"><source src="assets/mobile-A/panel-3-decorators-hands-mobile-A.mp4" media="(max-aspect-ratio: 1/1)" type="video/mp4"><source src="assets/panel-3-decorators-hands-loop.mp4" type="video/mp4"></video><div class="video-overlay top-left"><div class="panel-tag">The hands that pipe it<span class="em">are the hands that send it.</span></div></div></div></section>
 
-<section class="chapter"><div class="chapter-inner"><div class="chapter-num">III</div><div class="chapter-title">A custom web app, built for cakes, ready for the network.</div><div class="chapter-glyph">- &#11045; -</div><div class="chapter-body"><p>The web app is the operating system for the new model. It collects orders four hours ahead, routes each one from the central kitchen to the nearest fridge node, and hands it to a delivery partner on a scheduled round. <em>Every screen below exists to protect freshness, compress cost, and shift the customer from walk-in-and-grab to order-and-receive-fresh.</em></p><div class="feature-buckets"><div class="feature-bucket"><div class="feature-bucket-name">Customer storefront</div><ul><li><strong>Branded customer PWA</strong> - installable on iPhone and Android, no app store needed</li><li><strong>Full menu catalog</strong> - cakes, cheesecakes, pastries, croissants, cookies with category filters</li><li><strong>Filter by occasion</strong> - birthday, anniversary, wedding, festive, baby shower</li><li><strong>Filter by dietary preference</strong> - eggless, vegan, sugar-free, nut-free</li><li><strong>Search with auto-suggest</strong> - typo-tolerant, learns popular terms</li><li><strong>Design template library</strong> - Cocomelon, Stitch, Unicorn, festive and corporate themes</li><li><strong>Bestsellers, new arrivals, seasonal collections</strong> - Diwali, Christmas, Valentine's, Eid</li><li><strong>Customer reviews and 5-star ratings</strong> - moderated, with photo uploads</li><li><strong>Multi-image gallery per product</strong> - 360-degree angle if relevant</li><li><strong>Order now or order for later</strong> - same UI handles tonight's cake and next week's anniversary</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Slot booking + checkout</div><ul><li><strong>Slot calendar with live capacity</strong> - kitchen load visible per hour, prevents overbooking</li><li><strong>Future date booking</strong> - up to 30 days ahead</li><li><strong>Delivery zone validation</strong> - by pincode, with fallback messaging if outside zone</li><li><strong>Address book with multiple saved addresses</strong> - home, office, parents</li><li><strong>Google Maps address autocomplete</strong> - reduces address errors</li><li><strong>Pickup option</strong> - in-store or fridge-node collection</li><li><strong>Razorpay checkout</strong> - UPI, cards, EMI, wallets, net banking</li><li><strong>Saved payment methods</strong> - tokenized for one-tap reorder</li><li><strong>Discount code application</strong> - rule-engine for percentage, flat, BOGO</li><li><strong>GST-compliant invoice generation</strong> - auto-emailed PDF receipt</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Central kitchen + fridge network</div><ul><li><strong>Four-hour minimum lead time enforced</strong> - the freshness moat, hard-coded in checkout</li><li><strong>Fulfilment node routing engine</strong> - central kitchen to nearest active fridge by pincode and load</li><li><strong>Fridge node directory</strong> - kirana and dark-store partners onboarded with capacity per fridge</li><li><strong>Per-node menu customization</strong> - different stock per fridge, per neighbourhood</li><li><strong>Per-node operating hours and holidays</strong> - kirana store schedule independent of kitchen</li><li><strong>Live fridge inventory</strong> - which node holds which order, real-time stock and slot occupancy</li><li><strong>Scheduled pickup rounds</strong> - delivery partner sweeps fridge nodes on fixed timetables</li><li><strong>Multi-node architecture</strong> - new kirana fridges plug in within a day, no rebuild required</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Freshness loop + tracking</div><ul><li><strong>Live order tracking page</strong> - confirmed, baking, boxed, at fridge node, out for delivery</li><li><strong>Stage-by-stage push notifications</strong> - browser + email at each milestone</li><li><strong>Freshness passport per order</strong> - which kitchen, which baker, which fridge, baked-at timestamp</li><li><strong>Cold-chain timestamps</strong> - kitchen exit, fridge entry, fridge exit logged automatically</li><li><strong>Customer reassurance card</strong> - shows hours since baked at unboxing, never days</li><li><strong>Customer feedback prompt</strong> - automatic ask after delivery, NPS scored</li><li><strong>ETA updates</strong> - live delivery rider position once dispatched</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">AI content engine</div><ul><li><strong>AI-generated product photos</strong> - on demand, brand-styled, fresh creative weekly</li><li><strong>AI-written product descriptions</strong> - tone-matched, SEO-optimized, instant</li><li><strong>AI-refreshed seasonal banners</strong> - Diwali, Christmas, Valentine's, Mother's Day, Eid</li><li><strong>AI-generated festival creatives</strong> - social posts ready to copy and share</li><li><strong>AI-personalized birthday and anniversary messages</strong> - per customer, per occasion</li><li><strong>AI-optimized product titles</strong> - improves discoverability in search</li><li><strong>AI social media captions</strong> - ready-to-post for Instagram, Facebook</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Customer relationship</div><ul><li><strong>OTP-based account creation</strong> - one-tap signup, no passwords</li><li><strong>Order history with one-click reorder</strong> - last cake, fastest path</li><li><strong>Wishlist + favourites</strong> - save for next occasion</li><li><strong>Birthday and anniversary memory</strong> - auto-reminders seven days ahead</li><li><strong>Customer database with segmentation</strong> - flavour history, lifetime value tiers, churn risk</li><li><strong>Cart abandonment recovery</strong> - WhatsApp and email, 60 and 90-day re-engagement flows</li><li><strong>Time-based offers</strong> - weekend special, festive surge, midnight delivery</li><li><strong>Customer-segment-based offers</strong> - new customer vs loyal vs lapsed</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Admin operations</div><ul><li><strong>Admin Kanban order queue</strong> - drag-and-drop status updates</li><li><strong>Daily prep sheet auto-generated</strong> - tomorrow's bake list, by node, by ingredient</li><li><strong>One-click order status updates</strong> - bulk operations supported</li><li><strong>Multi-node inventory toggle</strong> - mark items in/out of stock per fridge</li><li><strong>Discount code creator with rules engine</strong> - percent, flat, BOGO, expiry, usage cap</li><li><strong>Product catalog manager</strong> - inline AI photo generator built into editor</li><li><strong>Staff accounts with role-based permissions</strong> - kitchen staff, delivery, admin, marketing</li><li><strong>Customer database search and segmentation</strong> - find any customer in two clicks</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Analytics + reporting</div><ul><li><strong>Daily revenue dashboard</strong> - by node, by hour, by category</li><li><strong>Daily P&L by fridge node</strong> - kitchen yield, fridge utilization, delivery cost per order</li><li><strong>Popular items report</strong> - 7-day, 30-day, by node</li><li><strong>Peak hours analysis</strong> - inform fridge stocking and slot capacity</li><li><strong>Customer cohort retention</strong> - who comes back at 30, 60, 90 days</li><li><strong>Excel and CSV export for any report</strong> - feed into external accounting</li><li><strong>Custom date range reports</strong> - any period, any combination of filters</li><li><strong>Daily revenue summary email to owner</strong> - end-of-day digest in your inbox</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">SEO + integrations</div><ul><li><strong>SEO-optimized URLs and meta tags</strong> - per product, per category</li><li><strong>Open Graph tags</strong> - rich social sharing on WhatsApp, Instagram, Facebook</li><li><strong>Google Analytics integration</strong> - traffic, conversions, behaviour flow</li><li><strong>Facebook Pixel integration</strong> - retargeting + conversion tracking</li><li><strong>Google Business Profile integration</strong> - reviews surface on website</li><li><strong>Local SEO setup</strong> - all outlet zones + fridge node pincodes optimized</li><li><strong>Sitemap and robots.txt</strong> - submitted to Google + Bing</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Performance + reliability + support</div><ul><li><strong>SSL certificate + HTTPS everywhere</strong> - never an unencrypted page</li><li><strong>CDN-backed image delivery</strong> - sub-second loads in Pune</li><li><strong>PWA caching</strong> - works on patchy 4G, instant repeat-visit</li><li><strong>Daily database backups</strong> - 30-day retention, point-in-time recovery</li><li><strong>99.5% uptime SLA</strong> - monitored 24x7, alerts on degradation</li><li><strong>DDoS protection</strong> - Cloudflare-grade edge filtering</li><li><strong>WhatsApp on-call support</strong> - 24-hour response SLA</li><li><strong>Onboarding session</strong> + staff training + video tutorials</li><li><strong>Quarterly business review</strong> - data-driven recommendations, roadmap refresh</li><li><strong>Monthly improvements</strong> based on real usage in your kitchen</li></ul></div></div><div class="fb-arch" role="img" aria-label="System architecture: customer PWA on top, central kitchen and fridge network and delivery layer in the middle, AI content and admin operations on the right, all connected">
+<section class="chapter"><div class="chapter-inner"><div class="chapter-num">III</div><div class="chapter-title">A custom web app, built for cakes, ready for the network.</div><div class="chapter-glyph">- &#11045; -</div><div class="chapter-body"><p>The web app is the operating system for the new model. It collects orders four hours ahead, routes each one from the central kitchen to the nearest fridge node, and hands it to a delivery partner on a scheduled round. <em>Every screen below exists to protect freshness, compress cost, and shift the customer from walk-in-and-grab to order-and-receive-fresh.</em></p><div class="feature-buckets-meta"><span class="feature-buckets-total">83</span> features across <span class="feature-buckets-cat-count">10</span> categories</div><div class="feature-buckets"><div class="feature-bucket"><div class="feature-bucket-header"><div class="feature-bucket-icon">&#127979;</div><div class="feature-bucket-name">Customer storefront</div><div class="feature-bucket-count">10</div></div><ul><li><strong>Branded customer PWA</strong> - installable on iPhone and Android, no app store needed</li><li><strong>Full menu catalog</strong> - cakes, cheesecakes, pastries, croissants, cookies with category filters</li><li><strong>Filter by occasion</strong> - birthday, anniversary, wedding, festive, baby shower</li><li><strong>Filter by dietary preference</strong> - eggless, vegan, sugar-free, nut-free</li><li><strong>Search with auto-suggest</strong> - typo-tolerant, learns popular terms</li><li><strong>Design template library</strong> - Cocomelon, Stitch, Unicorn, festive and corporate themes</li><li><strong>Bestsellers, new arrivals, seasonal collections</strong> - Diwali, Christmas, Valentine's, Eid</li><li><strong>Customer reviews and 5-star ratings</strong> - moderated, with photo uploads</li><li><strong>Multi-image gallery per product</strong> - 360-degree angle if relevant</li><li><strong>Order now or order for later</strong> - same UI handles tonight's cake and next week's anniversary</li></ul></div><div class="feature-bucket"><div class="feature-bucket-header"><div class="feature-bucket-icon">&#128197;</div><div class="feature-bucket-name">Slot booking + checkout</div><div class="feature-bucket-count">10</div></div><ul><li><strong>Slot calendar with live capacity</strong> - kitchen load visible per hour, prevents overbooking</li><li><strong>Future date booking</strong> - up to 30 days ahead</li><li><strong>Delivery zone validation</strong> - by pincode, with fallback messaging if outside zone</li><li><strong>Address book with multiple saved addresses</strong> - home, office, parents</li><li><strong>Google Maps address autocomplete</strong> - reduces address errors</li><li><strong>Pickup option</strong> - in-store or fridge-node collection</li><li><strong>Razorpay checkout</strong> - UPI, cards, EMI, wallets, net banking</li><li><strong>Saved payment methods</strong> - tokenized for one-tap reorder</li><li><strong>Discount code application</strong> - rule-engine for percentage, flat, BOGO</li><li><strong>GST-compliant invoice generation</strong> - auto-emailed PDF receipt</li></ul></div><div class="feature-bucket"><div class="feature-bucket-header"><div class="feature-bucket-icon">&#127874;</div><div class="feature-bucket-name">Central kitchen + fridge network</div><div class="feature-bucket-count">8</div></div><ul><li><strong>Four-hour minimum lead time enforced</strong> - the freshness moat, hard-coded in checkout</li><li><strong>Fulfilment node routing engine</strong> - central kitchen to nearest active fridge by pincode and load</li><li><strong>Fridge node directory</strong> - kirana and dark-store partners onboarded with capacity per fridge</li><li><strong>Per-node menu customization</strong> - different stock per fridge, per neighbourhood</li><li><strong>Per-node operating hours and holidays</strong> - kirana store schedule independent of kitchen</li><li><strong>Live fridge inventory</strong> - which node holds which order, real-time stock and slot occupancy</li><li><strong>Scheduled pickup rounds</strong> - delivery partner sweeps fridge nodes on fixed timetables</li><li><strong>Multi-node architecture</strong> - new kirana fridges plug in within a day, no rebuild required</li></ul></div><div class="feature-bucket"><div class="feature-bucket-header"><div class="feature-bucket-icon">&#10024;</div><div class="feature-bucket-name">Freshness loop + tracking</div><div class="feature-bucket-count">7</div></div><ul><li><strong>Live order tracking page</strong> - confirmed, baking, boxed, at fridge node, out for delivery</li><li><strong>Stage-by-stage push notifications</strong> - browser + email at each milestone</li><li><strong>Freshness passport per order</strong> - which kitchen, which baker, which fridge, baked-at timestamp</li><li><strong>Cold-chain timestamps</strong> - kitchen exit, fridge entry, fridge exit logged automatically</li><li><strong>Customer reassurance card</strong> - shows hours since baked at unboxing, never days</li><li><strong>Customer feedback prompt</strong> - automatic ask after delivery, NPS scored</li><li><strong>ETA updates</strong> - live delivery rider position once dispatched</li></ul></div><div class="feature-bucket"><div class="feature-bucket-header"><div class="feature-bucket-icon">&#128240;</div><div class="feature-bucket-name">AI content engine</div><div class="feature-bucket-count">7</div></div><ul><li><strong>AI-generated product photos</strong> - on demand, brand-styled, fresh creative weekly</li><li><strong>AI-written product descriptions</strong> - tone-matched, SEO-optimized, instant</li><li><strong>AI-refreshed seasonal banners</strong> - Diwali, Christmas, Valentine's, Mother's Day, Eid</li><li><strong>AI-generated festival creatives</strong> - social posts ready to copy and share</li><li><strong>AI-personalized birthday and anniversary messages</strong> - per customer, per occasion</li><li><strong>AI-optimized product titles</strong> - improves discoverability in search</li><li><strong>AI social media captions</strong> - ready-to-post for Instagram, Facebook</li></ul></div><div class="feature-bucket"><div class="feature-bucket-header"><div class="feature-bucket-icon">&#128153;</div><div class="feature-bucket-name">Customer relationship</div><div class="feature-bucket-count">8</div></div><ul><li><strong>OTP-based account creation</strong> - one-tap signup, no passwords</li><li><strong>Order history with one-click reorder</strong> - last cake, fastest path</li><li><strong>Wishlist + favourites</strong> - save for next occasion</li><li><strong>Birthday and anniversary memory</strong> - auto-reminders seven days ahead</li><li><strong>Customer database with segmentation</strong> - flavour history, lifetime value tiers, churn risk</li><li><strong>Cart abandonment recovery</strong> - WhatsApp and email, 60 and 90-day re-engagement flows</li><li><strong>Time-based offers</strong> - weekend special, festive surge, midnight delivery</li><li><strong>Customer-segment-based offers</strong> - new customer vs loyal vs lapsed</li></ul></div><div class="feature-bucket"><div class="feature-bucket-header"><div class="feature-bucket-icon">&#9881;&#65039;</div><div class="feature-bucket-name">Admin operations</div><div class="feature-bucket-count">8</div></div><ul><li><strong>Admin Kanban order queue</strong> - drag-and-drop status updates</li><li><strong>Daily prep sheet auto-generated</strong> - tomorrow's bake list, by node, by ingredient</li><li><strong>One-click order status updates</strong> - bulk operations supported</li><li><strong>Multi-node inventory toggle</strong> - mark items in/out of stock per fridge</li><li><strong>Discount code creator with rules engine</strong> - percent, flat, BOGO, expiry, usage cap</li><li><strong>Product catalog manager</strong> - inline AI photo generator built into editor</li><li><strong>Staff accounts with role-based permissions</strong> - kitchen staff, delivery, admin, marketing</li><li><strong>Customer database search and segmentation</strong> - find any customer in two clicks</li></ul></div><div class="feature-bucket"><div class="feature-bucket-header"><div class="feature-bucket-icon">&#128202;</div><div class="feature-bucket-name">Analytics + reporting</div><div class="feature-bucket-count">8</div></div><ul><li><strong>Daily revenue dashboard</strong> - by node, by hour, by category</li><li><strong>Daily P&L by fridge node</strong> - kitchen yield, fridge utilization, delivery cost per order</li><li><strong>Popular items report</strong> - 7-day, 30-day, by node</li><li><strong>Peak hours analysis</strong> - inform fridge stocking and slot capacity</li><li><strong>Customer cohort retention</strong> - who comes back at 30, 60, 90 days</li><li><strong>Excel and CSV export for any report</strong> - feed into external accounting</li><li><strong>Custom date range reports</strong> - any period, any combination of filters</li><li><strong>Daily revenue summary email to owner</strong> - end-of-day digest in your inbox</li></ul></div><div class="feature-bucket"><div class="feature-bucket-header"><div class="feature-bucket-icon">&#128269;</div><div class="feature-bucket-name">SEO + integrations</div><div class="feature-bucket-count">7</div></div><ul><li><strong>SEO-optimized URLs and meta tags</strong> - per product, per category</li><li><strong>Open Graph tags</strong> - rich social sharing on WhatsApp, Instagram, Facebook</li><li><strong>Google Analytics integration</strong> - traffic, conversions, behaviour flow</li><li><strong>Facebook Pixel integration</strong> - retargeting + conversion tracking</li><li><strong>Google Business Profile integration</strong> - reviews surface on website</li><li><strong>Local SEO setup</strong> - all outlet zones + fridge node pincodes optimized</li><li><strong>Sitemap and robots.txt</strong> - submitted to Google + Bing</li></ul></div><div class="feature-bucket"><div class="feature-bucket-header"><div class="feature-bucket-icon">&#128737;&#65039;</div><div class="feature-bucket-name">Performance + reliability + support</div><div class="feature-bucket-count">10</div></div><ul><li><strong>SSL certificate + HTTPS everywhere</strong> - never an unencrypted page</li><li><strong>CDN-backed image delivery</strong> - sub-second loads in Pune</li><li><strong>PWA caching</strong> - works on patchy 4G, instant repeat-visit</li><li><strong>Daily database backups</strong> - 30-day retention, point-in-time recovery</li><li><strong>99.5% uptime SLA</strong> - monitored 24x7, alerts on degradation</li><li><strong>DDoS protection</strong> - Cloudflare-grade edge filtering</li><li><strong>WhatsApp on-call support</strong> - 24-hour response SLA</li><li><strong>Onboarding session</strong> + staff training + video tutorials</li><li><strong>Quarterly business review</strong> - data-driven recommendations, roadmap refresh</li><li><strong>Monthly improvements</strong> based on real usage in your kitchen</li></ul></div></div><div class="fb-arch" role="img" aria-label="System architecture: customer PWA on top, central kitchen and fridge network and delivery layer in the middle, AI content and admin operations on the right, all connected">
   <div class="fb-arch-grid">
     <div class="fb-arch-node fb-arch-customer">
       <div class="fb-arch-icon">&#127968;</div>

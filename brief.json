@@ -103,6 +103,7 @@
       "feature_buckets": [
         {
           "name": "Customer storefront",
+          "icon": "&#127979;",
           "items": [
             "<strong>Branded customer PWA</strong> - installable on iPhone and Android, no app store needed",
             "<strong>Full menu catalog</strong> - cakes, cheesecakes, pastries, croissants, cookies with category filters",
@@ -118,6 +119,7 @@
         },
         {
           "name": "Slot booking + checkout",
+          "icon": "&#128197;",
           "items": [
             "<strong>Slot calendar with live capacity</strong> - kitchen load visible per hour, prevents overbooking",
             "<strong>Future date booking</strong> - up to 30 days ahead",
@@ -133,6 +135,7 @@
         },
         {
           "name": "Central kitchen + fridge network",
+          "icon": "&#127874;",
           "items": [
             "<strong>Four-hour minimum lead time enforced</strong> - the freshness moat, hard-coded in checkout",
             "<strong>Fulfilment node routing engine</strong> - central kitchen to nearest active fridge by pincode and load",
@@ -146,6 +149,7 @@
         },
         {
           "name": "Freshness loop + tracking",
+          "icon": "&#10024;",
           "items": [
             "<strong>Live order tracking page</strong> - confirmed, baking, boxed, at fridge node, out for delivery",
             "<strong>Stage-by-stage push notifications</strong> - browser + email at each milestone",
@@ -158,6 +162,7 @@
         },
         {
           "name": "AI content engine",
+          "icon": "&#128240;",
           "items": [
             "<strong>AI-generated product photos</strong> - on demand, brand-styled, fresh creative weekly",
             "<strong>AI-written product descriptions</strong> - tone-matched, SEO-optimized, instant",
@@ -170,6 +175,7 @@
         },
         {
           "name": "Customer relationship",
+          "icon": "&#128153;",
           "items": [
             "<strong>OTP-based account creation</strong> - one-tap signup, no passwords",
             "<strong>Order history with one-click reorder</strong> - last cake, fastest path",
@@ -183,6 +189,7 @@
         },
         {
           "name": "Admin operations",
+          "icon": "&#9881;&#65039;",
           "items": [
             "<strong>Admin Kanban order queue</strong> - drag-and-drop status updates",
             "<strong>Daily prep sheet auto-generated</strong> - tomorrow's bake list, by node, by ingredient",
@@ -196,6 +203,7 @@
         },
         {
           "name": "Analytics + reporting",
+          "icon": "&#128202;",
           "items": [
             "<strong>Daily revenue dashboard</strong> - by node, by hour, by category",
             "<strong>Daily P&L by fridge node</strong> - kitchen yield, fridge utilization, delivery cost per order",
@@ -209,6 +217,7 @@
         },
         {
           "name": "SEO + integrations",
+          "icon": "&#128269;",
           "items": [
             "<strong>SEO-optimized URLs and meta tags</strong> - per product, per category",
             "<strong>Open Graph tags</strong> - rich social sharing on WhatsApp, Instagram, Facebook",
@@ -221,6 +230,7 @@
         },
         {
           "name": "Performance + reliability + support",
+          "icon": "&#128737;&#65039;",
           "items": [
             "<strong>SSL certificate + HTTPS everywhere</strong> - never an unencrypted page",
             "<strong>CDN-backed image delivery</strong> - sub-second loads in Pune",
