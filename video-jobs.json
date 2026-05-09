@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "image": "assets/panels/panel-1.png",
+    "motion_prompt": "Static camera, the cake on the turntable rotates slowly clockwise at three degrees per second over five seconds, completing a smooth quarter turn. The pastel unicorn topper catches changing soft daylight as the cake rotates, gold horn glinting subtly. Subtle ambient bakery movement in the out-of-focus background (a curtain shifting gently, sparkles drifting). Bright, joyful, clean atmosphere preserved throughout. NO fast motion, NO cuts, weighted graceful rotation. Designed to loop seamlessly with cyclic motion returning to start position."
+  },
+  {
+    "id": 2,
+    "image": "assets/panels/panel-2.png",
+    "motion_prompt": "Static camera. Soft daylight subtly shifts intensity in a slow rhythmic pattern over five seconds, as if a cloud passing outside. Steam-like cool condensation around the blueberry compote glistens and shimmers gently in cyclic motion. The pink linen napkin edge ruffles softly in a slow breeze and returns. Glints on the silver dessert fork twinkle and return to starting intensity. NO camera movement, NO cuts, weighted serene atmosphere. Designed to loop seamlessly with cyclic motion returning to start."
+  },
+  {
+    "id": 3,
+    "image": "assets/panels/panel-3.png",
+    "motion_prompt": "Static overhead camera. The hands hold steady but the piping bag fingertips squeeze gently in a slow rhythmic pattern as if continuing to pipe, with a tiny dab of buttercream extruding and retreating cyclically. The wooden cake stand rotates almost imperceptibly clockwise at one degree per second. Soft daylight shifts subtly. The gold bangle catches a faint glint and returns. NO sudden motion, NO cuts, weighted graceful craftsmanship. Designed to loop seamlessly with cyclic motion returning to start."
+  },
+  {
+    "id": 4,
+    "image": "assets/panels/panel-4.png",
+    "motion_prompt": "Static camera. The iPad screen content subtly pulses with a soft pastel-pink glow that breathes in a cyclic pattern, gently illuminating her face and the iPad bezels rhythmically. Out-of-focus fairy lights in the background twinkle softly in a cyclic on-off pattern. Her hands hold the iPad steady. A faint smile flickers and returns. NO sudden motion, NO cuts, weighted joyful atmosphere. Designed to loop seamlessly with cyclic motion returning to start."
+  },
+  {
+    "id": 5,
+    "image": "assets/panels/panel-5.png",
+    "motion_prompt": "Static camera. The candle flames flicker rhythmically in a cyclic pattern, casting warm dancing light on the child's face that breathes in and out. Pastel balloons in the background sway gently in a slow rhythm. The child's soft smile holds steady with subtle eye-blinks. Soft daylight from the window shifts subtly. NO sudden motion, NO cuts, weighted joyful family-celebration atmosphere. Designed to loop seamlessly with cyclic candle-flicker motion that returns to starting state."
+  },
+  {
+    "id": 6,
+    "image": "assets/panels/panel-6.png",
+    "motion_prompt": "Static camera. The cake box held by the delivery person's hands shifts forward by a tiny amount in a slow rhythmic offer-and-return motion, as if mid-handover. The young woman's warm smile holds steady with subtle micro-expressions. The child peeking from behind blinks softly and the eyes brighten. Soft corridor daylight breathes gently. NO sudden motion, NO cuts, weighted joyful doorstep-arrival atmosphere. Designed to loop seamlessly with cyclic motion returning to starting state."
+  }
+]

@@ -1,0 +1,266 @@
+{
+  "page_title": "A custom platform for Fantasy Bakery",
+  "hero": {
+    "eyebrow": "For Fantasy Bakery 'n' Patisserie · Pune",
+    "tagline_white": "One day, the kitchen runs the bakery.",
+    "tagline_gold": "Today, we build the platform."
+  },
+
+  "signer": {
+    "name": "Shruti Pethkar",
+    "initials": "SP",
+    "org": "Jarvis Daily · Tranquil Veda",
+    "email": "shruti@jarvisdaily.com"
+  },
+
+  "whatsapp_link": "https://wa.me/919673758777?text=Hi%20Shruti%2C%20Fantasy%20Bakery%20here.%20Let%27s%20start.",
+  "whatsapp_label": "WhatsApp Shruti",
+
+  "panels": [
+    {
+      "id": 1,
+      "slug": "custom-cake-reveal",
+      "role": "hero",
+      "image_prompt": "(see panels-prompts.json)",
+      "motion_prompt": "(see video-jobs.json)",
+      "crop_offset": "center"
+    },
+    {
+      "id": 2,
+      "slug": "cheesecake-slice",
+      "role": "atmos",
+      "tagline": {
+        "shape": "absolute",
+        "white": "Freshness is not a feature.",
+        "gold": "It is the whole product."
+      },
+      "crop_offset": "center"
+    },
+    {
+      "id": 3,
+      "slug": "decorators-hands",
+      "role": "atmos",
+      "tagline": {
+        "shape": "declarative",
+        "white": "The hands that pipe it",
+        "gold": "are the hands that send it."
+      },
+      "crop_offset": "center"
+    },
+    {
+      "id": 4,
+      "slug": "ai-magic",
+      "role": "atmos",
+      "tagline": {
+        "shape": "comma-beat",
+        "white": "Recipes change with the season,",
+        "gold": "and the kitchen hears about it before the customer does."
+      },
+      "crop_offset": "center"
+    },
+    {
+      "id": 5,
+      "slug": "birthday-moment",
+      "role": "atmos",
+      "tagline": {
+        "shape": "imperative-reassurance",
+        "white": "Order at lunch.",
+        "gold": "The candles will be lit on time."
+      },
+      "crop_offset": "right"
+    },
+    {
+      "id": 6,
+      "slug": "doorstep-joy",
+      "role": "closer",
+      "tagline": {
+        "shape": "parallel",
+        "white": "One day, dessert was a shop you walked into.",
+        "gold": "Today, it is a doorbell that rings on schedule."
+      },
+      "crop_offset": "center"
+    }
+  ],
+
+  "chapters": [
+    {
+      "num": "I",
+      "title": "The math of brick-and-mortar bakery has stopped working.",
+      "body_html": "<p>The rent on a single Fantasy outlet has moved from <strong>₹50,000</strong> to <strong>₹90,000</strong> a month, and it has not finished climbing. A designer cake still sells at roughly <strong>₹500</strong>, and that number is not flexible. A parent buying a child's birthday cake will not pay ₹900; the social ceiling for a family-occasion cake in Pune sits between ₹500 and ₹700. Across five outlets, the rent gap alone is over <strong>₹2,00,000</strong> of fixed cost a month that the cake price cannot absorb.</p><p>This is not a bad quarter. Rent in Pune moves in one direction. A designer cake's price is anchored to what a household considers reasonable for an occasion. The two lines do not meet again. Every renewal cycle widens the gap, and every new outlet inherits the same arithmetic. The squeeze is structural - it lives in the shape of the business, not in a season or a slowdown.</p><p>The honest read is that the storefront model for designer cake in Pune has eighteen to thirty-six months of viable runway, and the people running Fantasy can already feel it in the monthly numbers. The question worth sitting with is not how to defend the shopfronts. It is what the bakery looks like when the shopfronts are no longer the unit of the business.<br/><em>The format is ending. The bakery does not have to.</em></p>",
+      "animation": "fb-cost"
+    },
+    {
+      "num": "II",
+      "title": "What if Fantasy ran without a single shopfront?",
+      "body_html": "<p>Picture one central kitchen, the one Fantasy already knows how to run, producing every cake. Around it, a network of <strong>25 to 40 fridge nodes</strong> placed inside neighbourhood kirana stores and dark-kitchen partners across Pune, each renting shelf-space for a few thousand rupees a month. A customer places an order on a Fantasy website with a four-hour lead time. The kitchen produces fresh, the cake travels to the nearest node, a delivery partner picks it up on a scheduled round, and it reaches the door the same day it was made.</p><p>The freshness story stops being a marketing line and becomes a property of the model. Most cake bought from a display counter today has been sitting one to two days; the customer cannot tell, but the bakery can. When the kitchen and the customer are linked by the order itself, no cake waits days on a shelf. Fantasy delivers a measurably fresher product, and does it at a lower delivered cost than carrying five shopfronts. <em>That is a better cake and a healthier business at the same time.</em></p><p>The piece that makes this future feasible is not the kitchen and not the fridges. It is the layer that teaches a Pune parent to order four hours ahead instead of walking into a shop. A Fantasy website built for the four-hour rhythm, paired with a WhatsApp marketing engine that nudges occasions, reorders, and node-level offers, is the operating system of the new bakery. Without it, the model stays a diagram. With it, the model runs.</p>",
+      "animation": "fb-pipe"
+    },
+    {
+      "num": "III",
+      "title": "A custom web app, built for cakes, ready for the network.",
+      "body_html": "<p>The web app is the operating system for the new model. It collects orders four hours ahead, routes each one from the central kitchen to the nearest fridge node, and hands it to a delivery partner on a scheduled round. <em>Every screen below exists to protect freshness, compress cost, and shift the customer from walk-in-and-grab to order-and-receive-fresh.</em></p>",
+      "animation": "fb-arch",
+      "feature_buckets": [
+        {
+          "name": "Customer ordering",
+          "items": [
+            "<strong>Branded customer PWA</strong> - installable on iPhone and Android, no app store",
+            "<strong>Custom cake builder</strong> - flavor, size, fondant name, reference photo upload",
+            "<strong>Design template library</strong> - Cocomelon, Stitch, Unicorn, festive and corporate themes",
+            "<strong>Order now or order for later</strong> - same UI handles tonight's cake and next week's anniversary",
+            "<strong>Slot calendar with live capacity</strong> - kitchen load visible per hour, prevents overbooking",
+            "<strong>Razorpay checkout</strong> - UPI, cards, EMI, wallets, auto GST invoice"
+          ]
+        },
+        {
+          "name": "Central kitchen + fridge network",
+          "items": [
+            "<strong>Four-hour minimum lead time enforced</strong> - the freshness moat, hard-coded in checkout",
+            "<strong>Fulfilment node routing engine</strong> - central kitchen to nearest active fridge by pincode and load",
+            "<strong>Fridge node directory</strong> - kirana and dark-store partners onboarded with capacity per fridge",
+            "<strong>Live fridge inventory</strong> - which node holds which order, real-time stock and slot occupancy",
+            "<strong>Scheduled pickup rounds</strong> - delivery partner sweeps fridge nodes on fixed timetables, not on-demand",
+            "<strong>Multi-node architecture</strong> - new kirana fridges plug in within a day, no rebuild"
+          ]
+        },
+        {
+          "name": "Freshness loop",
+          "items": [
+            "<strong>Live order tracking</strong> - confirmed, baking, boxed, at fridge node, out for delivery",
+            "<strong>Freshness passport per order</strong> - which kitchen, which baker, which fridge, baked-at timestamp",
+            "<strong>Cold-chain timestamps</strong> - kitchen exit, fridge entry, fridge exit logged automatically",
+            "<strong>Customer reassurance card</strong> - shows hours since baked at unboxing, never days"
+          ]
+        },
+        {
+          "name": "Marketing in the loop",
+          "items": [
+            "<strong>AI-generated product photos</strong> - on demand, no photographer, fresh creative weekly",
+            "<strong>Birthday and anniversary auto-greeter</strong> - AI-personalized, nudges the four-hour pre-order",
+            "<strong>Cart abandonment recovery</strong> - WhatsApp and email, 60 and 90-day re-engagement flows",
+            "<strong>Customer memory and segmentation</strong> - flavor history, occasion calendar, lifetime value tiers"
+          ]
+        },
+        {
+          "name": "Operations + analytics",
+          "items": [
+            "<strong>Admin Kanban and prep sheet</strong> - order queue, daily bake list, fridge-node view",
+            "<strong>Daily revenue and P&L by node</strong> - kitchen yield, fridge utilization, delivery cost per order",
+            "<strong>SEO, PWA caching, 99.5% uptime</strong> - daily backups, fast even on patchy 4G",
+            "<strong>WhatsApp on-call support</strong> - onboarding, training, quarterly business review"
+          ]
+        }
+      ]
+    },
+    {
+      "num": "IV",
+      "title": "Teaching a city to plan four hours ahead.",
+      "body_html": "<p>The new model only works if Pune parents learn one small habit: order four hours ahead. Every other piece of the system - the central kitchen, the fridge nodes, the partner network - is already engineered. The single missing variable is consumer behaviour. Marketing is therefore not decoration on this rollout. <strong>It is the structural unlock.</strong> Without a steady drumbeat reaching the right households at the right moments of the week, the freshness advantage stays invisible and the model stays underused. With it, the four-hour window quietly becomes the new normal for designer cakes in Pune.</p><p>Jarvis Daily runs that drumbeat end-to-end on WhatsApp. Four to six broadcasts a month, written and scheduled by us, teach the four-hour habit through festive campaigns, weekend cravings, and seasonal launches. Birthday and anniversary auto-flows reach customers a week ahead, when the decision is actually being made. Cart-abandonment nudges recover orders that stalled mid-checkout. Every customer reply lands inside Fantasy's dashboard as a tagged lead, ready for the team to close. <em>Fantasy approves the calendar; we operate it.</em></p>",
+      "animation": "fb-chat",
+      "campaign_examples": [
+        {
+          "title": "The 4-Hour Promise",
+          "angle": "Reframes the lead time as a feature - proof the cake is being made for you, not pulled from a shelf.",
+          "broadcast": "Hello from Fantasy. Here is something you may not have known about us. When you place an order with Fantasy, your cake does not exist yet. Our central kitchen begins it the moment your order arrives, and it reaches you in just 4 hours. That short wait is the reason every Fantasy cake tastes the way it does. Try it this weekend. Order by 2 PM, celebrate by 6 PM."
+        },
+        {
+          "title": "Made After You Order",
+          "angle": "Surfaces the always-fresh story as Fantasy's quiet standard, with no comparison to anyone else.",
+          "broadcast": "A small thing we are proud of at Fantasy. Every cake that leaves our kitchen was made after a parent, a partner, or a friend asked for it. Never before. That is why our buttercream still tastes like cream and our sponge still tastes like the morning. If you have not ordered from us in a while, this is your reminder."
+        },
+        {
+          "title": "Birthday Week Unicorn",
+          "angle": "Triggers seven days before a saved birthday with a soft nudge plus a designer-cake suggestion.",
+          "broadcast": "Someone in your home has a birthday next week, and we did not want it to sneak up on you. Our unicorn-and-pastel collection is open for booking, with custom toppers, names piped in gold, and the four-hour fresh promise you already know us for. Reply with the date and the flavour, and we will hold the slot."
+        }
+      ],
+      "deliverables": [
+        "<strong>WhatsApp Business API setup</strong> + Meta verification + green-tick application",
+        "<strong>8 to 10 marketing templates</strong> submitted and approved by Meta",
+        "<strong>4 to 6 broadcasts per month</strong> run by us, in your voice",
+        "<strong>Festive campaigns</strong> - Diwali, Christmas, Valentine's, Mother's Day, Eid",
+        "<strong>Birthday + anniversary auto-trigger flows</strong>",
+        "<strong>Order, status, and delivery notifications</strong> - automated",
+        "<strong>Cart abandonment recovery flow</strong>",
+        "<strong>Two-way reply handling</strong> - replies land as leads in your dashboard",
+        "<strong>60-day and 90-day re-engagement campaigns</strong>",
+        "<strong>Monthly campaign analytics report</strong>"
+      ]
+    },
+    {
+      "num": "V",
+      "title": "What it costs to build this.",
+      "anchor": "pricing",
+      "body_html": "<p>One budget, two engines. The website is the operational core - it takes the orders, runs the kitchen-to-fridge routing, and proves the freshness. The WhatsApp service is the behavioural unlock - it teaches Pune to order four hours ahead. We bifurcate the numbers so you can see exactly what each engine costs to build and to run.</p>",
+      "bifurcated_pricing": {
+        "setup": {
+          "total": "₹3,75,000",
+          "components": [
+            {
+              "label": "Website",
+              "amount": "₹3,55,000",
+              "note": "Custom build · 8 to 10 weeks · PWA, kitchen routing, fridge inventory, freshness passport, admin dashboard, AI content layer, multi-node architecture."
+            },
+            {
+              "label": "WhatsApp bot setup",
+              "amount": "₹20,000",
+              "note": "API onboarding · Meta verification · core templates · dashboard integration."
+            }
+          ],
+          "payment_terms": "Excl. 18% GST · Payment 40% kickoff · 30% UAT · 30% go-live and sign-off"
+        },
+        "monthly": {
+          "total": "₹20,000",
+          "components": [
+            {
+              "label": "Website retainer",
+              "amount": "₹10,000",
+              "items": [
+                "Maintenance, security, daily backups",
+                "Monthly improvements based on usage",
+                "AI content support - photos, captions",
+                "On-call support during festive rushes",
+                "Quarterly business review"
+              ]
+            },
+            {
+              "label": "WhatsApp retainer",
+              "amount": "₹10,000",
+              "items": [
+                "4 to 6 broadcasts per month run by us",
+                "Festive + birthday + anniversary auto-flows",
+                "Cart abandonment recovery",
+                "Two-way reply handling - leads in dashboard",
+                "Monthly campaign analytics"
+              ]
+            }
+          ],
+          "payment_terms": "Excl. 18% GST · Starts only after go-live · 30-day notice to exit",
+          "cta_text": "Confirm to begin",
+          "cta_link": "https://wa.me/919673758777?text=Hi%20Shruti%2C%20Fantasy%20Bakery%20here.%20Let%27s%20start.",
+          "terms_fine": "Razorpay transaction fees, hosting, AI API usage, and Meta WhatsApp message charges are paid by Fantasy directly to those providers. Estimated combined external bills: ₹6,000 to ₹8,000/month at typical bakery volume, variable with usage. Platform IP retained by Tranquil Veda; data, customer records, and prompts owned entirely by Fantasy Bakery."
+        }
+      }
+    },
+    {
+      "num": "VI",
+      "title": "Scope, FAQ, and what each side owns.",
+      "animation": "fb-ip",
+      "body_html": "<p><strong>What is not included in this engagement.</strong> Native iOS or Android apps (future expansion). Multi-city operations beyond Pune (future expansion). A separate kirana-partner mobile app for fridge-node operators (future Phase 2). Direct integration with restaurant-OS platforms (orders flow through admin for now). Razorpay merchant onboarding (Fantasy holds the merchant account directly). Studio photography or content creation outside AI-generated assets.</p><p><strong>Frequent questions.</strong></p><p><em>Why ₹20,000/month when SaaS platforms cost ₹3,000?</em><br/>A SaaS template gives you a generic restaurant page. No central-kitchen routing, no fridge-node inventory, no four-hour freshness passport, no managed WhatsApp campaigns, no path to the kirana-fridge model. Our retainer replaces a part-time marketing manager (₹25,000-30,000/month) and keeps your custom platform running. Stop paying any time and the system still belongs to you.</p><p><em>What does the setup actually cover?</em><br/>Roughly 600 hours of skilled work over 8-10 weeks: design, custom development, AI integration, WhatsApp Business API setup, Meta template approvals, testing, deployment, and onboarding for your team.</p><p><em>How does the kirana-fridge network roll out?</em><br/>The web app is built with multi-fulfilment-point architecture from day one - the data model already understands multiple distribution nodes. We launch with the central kitchen plus the first 5-10 fridge partners. Adding nodes 11 through 40 happens through admin UI without engineering work. The kirana-partner mobile app is a future Phase 2 add-on, not a rebuild.</p><p><em>Who pays for WhatsApp messages and AI API usage?</em><br/>Fantasy pays Meta and OpenAI directly through accounts set up in your name during onboarding. We never resell those bills. Estimated combined external cost: ₹6,000 to ₹8,000/month at typical bakery volume.</p><p><em>What if my volume grows beyond what the retainer covers?</em><br/>The retainer covers up to 500 orders/month of support load. Beyond that, we either tier up the retainer transparently or move you to Phase 2 (multi-kitchen routing engine, designed for higher volume).</p><p><em>Can I see the platform before paying everything?</em><br/>Yes. After kickoff (₹1,50,000), you see working screens within two weeks and a fully working UAT version before the second payment. The third and final payment only happens after you have personally confirmed go-live success.</p><p><strong>Data Ownership and Intellectual Property.</strong></p>",
+      "body_after_animation_html": "<p><em>Your data is yours.</em> All customer records, order history, transaction logs, WhatsApp conversation history, customer database, and analytics belong entirely to Fantasy Bakery 'n' Patisserie. You receive full administrative access to view, export, and delete this data at any time. Jarvis Daily will not use your customer or order data for any purpose other than operating your platform. On termination, Jarvis Daily provides a complete export within seven business days.</p><p><em>Our platform is ours.</em> The bot software, source code, system prompts, AI instructions, content generation templates, marketing workflows, admin dashboard codebase, and underlying infrastructure remain the intellectual property of Jarvis Daily. Fantasy Bakery is licensing the use of this platform and the operational service around it, not acquiring ownership of the platform itself. This is standard practice for managed software services and protects our ability to keep improving the platform across all clients.</p><p><em>Third-party services operate under their own terms.</em> The platform uses industry-standard third-party services: Razorpay for payments, Meta's WhatsApp Business API for messaging, OpenAI and Google for AI image and text generation, and a cloud hosting provider for infrastructure. Each operates under its own terms and retains records per its own policies. Razorpay records are retained as required under Indian tax and payments regulation, independent of this SOW. Jarvis Daily selects responsible providers but does not warrant third-party conduct or uptime. Total liability for any sub-processor incident is capped at fees paid in the preceding three months.</p>"
+    }
+  ],
+
+  "closer": {
+    "headline_white": "Ready to begin?",
+    "headline_gold": "",
+    "lede": "Reply to Shruti directly. We share the project kickoff agreement within 24 hours, and the build clock starts the moment you sign. <strong>shruti@jarvisdaily.com  ·  +91 96737 58777</strong>",
+    "cta_text": "Send a WhatsApp",
+    "cta_link": "https://wa.me/919673758777?text=Hi%20Shruti%2C%20Fantasy%20Bakery%20here.%20Let%27s%20start."
+  },
+
+  "footer": {
+    "company_line": "Tranquil Veda Private Limited · Pune, Maharashtra · GSTIN 27AAHCT6956C1Z3 · Brand: Jarvis Daily",
+    "links_html": "<a href=\"mailto:shruti@jarvisdaily.com\">shruti@jarvisdaily.com</a> · <a href=\"https://wa.me/919673758777\">+91 96737 58777</a>"
+  }
+}

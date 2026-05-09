@@ -1,0 +1,1701 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="robots" content="noindex,nofollow" />
+<meta name="data-published" content="2026-05-09" />
+<meta name="data-valid-until" content="2026-05-23" />
+<title>A custom platform for Fantasy Bakery</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400;1,500&family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+
+
+<style>
+  /* ============= RESET + BASE ============= */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --ink: #f6f1e1;
+    --ink-soft: rgba(246, 241, 225, 0.82);
+    --ink-mute: rgba(246, 241, 225, 0.55);
+    --ink-low: rgba(246, 241, 225, 0.35);
+    --gold: #c49a2a;
+    --gold-glow: #ffd470;
+    --warm: #f9d68b;
+    --parchment-dark: #15110b;
+    --parchment-mid: #1f1810;
+    --parchment-edge: #0d0a05;
+    --shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+    --whatsapp: #25D366;
+  }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Cormorant Garamond", "Garamond", Georgia, serif;
+    color: var(--ink);
+    background: var(--parchment-edge);
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+  .sans { font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+
+  /* ============= VIDEO PANELS ============= */
+  .video-panel {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    background: #000;
+  }
+  .video-panel video,
+  .video-panel .vid-fallback {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    z-index: 1;
+  }
+  /* No global panel-wide vignettes by default - they muddy bright/pastel
+     videos and read as a "weird black screen". Text legibility is handled
+     by localized scrims under .video-overlay.top-left::before and
+     .video-overlay.bottom::before instead. See references/panel-taglines.md
+     for the recommended scrim CSS. If a specific build needs a global
+     vignette (e.g. very bright sky-dominated landscapes), opt in via a
+     palette-override.css rule. */
+  .video-panel::before,
+  .video-panel::after,
+  .video-panel.atmos::before,
+  .video-panel.atmos::after {
+    content: none;
+  }
+
+  .video-overlay {
+    position: relative;
+    z-index: 3;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    padding: 0 8vw;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+  .video-overlay.center { justify-content: center; }
+  .video-overlay.top { justify-content: flex-start; padding-top: 14vh; }
+  .video-overlay.bottom { justify-content: flex-end; padding-bottom: 14vh; }
+
+  .stage-label {
+    align-self: flex-start;
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.28em;
+    text-transform: uppercase;
+    color: var(--warm);
+    background: rgba(13, 10, 5, 0.72);
+    backdrop-filter: blur(14px);
+    padding: 10px 18px;
+    border-radius: 999px;
+    border: 1px solid rgba(196, 154, 42, 0.3);
+    margin-top: 14vh;
+  }
+  .video-panel.atmos .video-overlay { justify-content: flex-start; padding-top: 8vh; }
+
+  /* ============= TYPOGRAPHY ============= */
+  .eyebrow {
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin-bottom: 16px;
+    opacity: 0.95;
+  }
+  h1, h2 {
+    font-weight: 500;
+    letter-spacing: -0.01em;
+    line-height: 1.04;
+    text-shadow: 0 6px 30px rgba(0, 0, 0, 0.65);
+  }
+  h1 { font-size: clamp(40px, 6.6vw, 92px); margin-bottom: 22px; }
+  h2 { font-size: clamp(32px, 4.4vw, 60px); margin-bottom: 18px; }
+  h3 { font-size: clamp(20px, 2.2vw, 28px); margin-bottom: 12px; font-weight: 500; line-height: 1.2; }
+
+  .lede {
+    font-family: "Inter", sans-serif;
+    font-size: clamp(15px, 1.2vw, 18px);
+    line-height: 1.65;
+    max-width: 58ch;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    text-shadow: 0 2px 14px rgba(0, 0, 0, 0.55);
+  }
+  .lede strong { color: var(--ink); font-weight: 500; }
+  .lede em { font-family: "Cormorant Garamond", serif; font-style: italic; color: var(--warm); font-size: 1.06em; }
+
+  /* ============= HERO PRICE ANCHOR ============= */
+  .hero-price {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 12px;
+    font-family: "Inter", sans-serif;
+    background: rgba(13, 10, 5, 0.6);
+    backdrop-filter: blur(14px);
+    border: 1px solid rgba(196, 154, 42, 0.35);
+    border-radius: 14px;
+    padding: 14px 22px;
+    margin-bottom: 22px;
+    width: fit-content;
+  }
+  .hero-price .from { font-size: 11px; color: var(--ink-mute); letter-spacing: 0.18em; text-transform: uppercase; }
+  .hero-price .num { font-family: "Cormorant Garamond", serif; font-size: 32px; color: var(--gold-glow); font-weight: 500; letter-spacing: -0.01em; }
+  .hero-price .per { font-size: 13px; color: var(--ink-soft); }
+  .hero-price .gst { font-size: 12px; color: var(--ink-mute); }
+
+  /* ============= CHAPTER CARDS ============= */
+  .chapter {
+    position: relative;
+    width: 100%;
+    min-height: 90vh;
+    background:
+      radial-gradient(ellipse at top, rgba(196, 154, 42, 0.05), transparent 60%),
+      linear-gradient(180deg, var(--parchment-edge) 0%, var(--parchment-dark) 25%, var(--parchment-mid) 50%, var(--parchment-dark) 75%, var(--parchment-edge) 100%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 110px 8vw;
+  }
+  .chapter::before, .chapter::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .chapter::before { top: 70px; }
+  .chapter::after { bottom: 70px; }
+  .chapter-inner {
+    max-width: 820px;
+    width: 100%;
+  }
+  .chapter-num {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 32px;
+    color: var(--gold);
+    letter-spacing: 0.4em;
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .chapter-title {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(28px, 3.4vw, 44px);
+    font-style: italic;
+    font-weight: 400;
+    color: var(--ink);
+    text-align: center;
+    margin-bottom: 14px;
+    line-height: 1.15;
+  }
+  .chapter-glyph {
+    text-align: center;
+    color: var(--gold);
+    font-family: serif;
+    letter-spacing: 0.6em;
+    margin-bottom: 32px;
+    font-size: 14px;
+  }
+  .chapter-body {
+    font-family: "Inter", sans-serif;
+    font-size: clamp(15px, 1.15vw, 17px);
+    line-height: 1.75;
+    color: var(--ink-soft);
+    text-align: left;
+  }
+  .chapter-body p { margin-bottom: 18px; }
+  .chapter-body p:last-child { margin-bottom: 0; }
+  .chapter-body strong { color: var(--ink); font-weight: 600; }
+  .chapter-body em { font-family: "Cormorant Garamond", serif; font-style: italic; font-size: 1.08em; color: var(--warm); }
+
+  .sub-h {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--warm);
+    margin: 28px 0 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid rgba(196, 154, 42, 0.2);
+  }
+
+  .deliverables {
+    margin-top: 14px;
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px 28px;
+  }
+  @media (max-width: 700px) { .deliverables { grid-template-columns: 1fr; } }
+  .deliverables li {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    padding-left: 18px;
+    position: relative;
+  }
+  .deliverables li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 9px;
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+  }
+  .deliverables li strong { color: var(--ink); font-weight: 600; }
+
+  /* ============= PRICING CARD ============= */
+  .pricing-card {
+    margin-top: 28px;
+    background: linear-gradient(135deg, rgba(196, 154, 42, 0.10), rgba(196, 154, 42, 0.02));
+    border: 1px solid rgba(196, 154, 42, 0.4);
+    border-radius: 18px;
+    padding: 32px 36px;
+  }
+  .pricing-card .price-row {
+    display: flex; align-items: baseline; gap: 14px; margin-bottom: 8px; flex-wrap: wrap;
+  }
+  .pricing-card .price {
+    font-family: "Cormorant Garamond", serif;
+    font-size: clamp(42px, 5vw, 64px);
+    font-weight: 500;
+    color: var(--gold-glow);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+  .pricing-card .per {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    color: var(--ink-soft);
+    letter-spacing: 0.04em;
+  }
+  .pricing-card .term-line {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+  }
+  .pricing-card ul {
+    list-style: none;
+    padding: 0;
+    margin: 0 0 22px 0;
+  }
+  .pricing-card li {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    color: var(--ink-soft);
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(246, 241, 225, 0.08);
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+  .pricing-card li:last-child { border-bottom: none; }
+  .pricing-card li::before {
+    content: "";
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--gold);
+    flex-shrink: 0;
+    margin-top: 8px;
+  }
+  .pricing-card .terms-fine {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    color: var(--ink-mute);
+    line-height: 1.7;
+    border-top: 1px solid rgba(246, 241, 225, 0.08);
+    padding-top: 16px;
+    margin-top: 6px;
+  }
+  .why-this-price {
+    margin-top: 22px;
+    padding: 16px 20px;
+    background: rgba(196, 154, 42, 0.04);
+    border-left: 2px solid var(--gold);
+    border-radius: 0 6px 6px 0;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    line-height: 1.7;
+    color: var(--ink-soft);
+  }
+  .why-this-price .label { font-size: 10px; font-weight: 700; letter-spacing: 0.18em; text-transform: uppercase; color: var(--warm); display: block; margin-bottom: 6px; }
+
+  .not-included {
+    margin-top: 20px;
+    padding: 18px 20px;
+    background: rgba(13, 10, 5, 0.6);
+    border: 1px solid rgba(246, 241, 225, 0.08);
+    border-radius: 8px;
+  }
+  .not-included .label { font-size: 11px; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--ink-mute); display: block; margin-bottom: 10px; }
+  .not-included ul { list-style: none; padding: 0; margin: 0; }
+  .not-included li {
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--ink-soft);
+    padding: 4px 0 4px 18px;
+    position: relative;
+  }
+  .not-included li::before { content: "·"; position: absolute; left: 4px; top: 4px; color: var(--ink-mute); font-size: 16px; }
+
+  /* ============= CTAs ============= */
+  .cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    color: #15110b;
+    background: linear-gradient(135deg, var(--gold-glow), var(--gold));
+    padding: 16px 28px;
+    border-radius: 999px;
+    box-shadow: 0 12px 30px rgba(196, 154, 42, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    width: fit-content;
+  }
+  .cta:hover { transform: translateY(-2px); box-shadow: 0 16px 36px rgba(196, 154, 42, 0.5); }
+  .cta .arrow { transition: transform 0.2s ease; }
+  .cta:hover .arrow { transform: translateX(4px); }
+  .cta-secondary {
+    display: inline-block;
+    margin-top: 14px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: var(--ink-soft);
+    text-decoration: underline;
+    text-decoration-color: rgba(196, 154, 42, 0.4);
+    text-underline-offset: 4px;
+  }
+  .cta-secondary:hover { color: var(--warm); }
+
+  /* ============= SIGNER CARD ============= */
+  .signer-card {
+    margin-top: 28px;
+    display: inline-flex;
+    align-items: center;
+    gap: 14px;
+    background: rgba(13, 10, 5, 0.7);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(246, 241, 225, 0.14);
+    border-radius: 999px;
+    padding: 10px 22px 10px 14px;
+    width: fit-content;
+  }
+  .signer-card .avatar {
+    width: 42px; height: 42px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--gold), #6b4e16);
+    color: #15110b;
+    display: flex; align-items: center; justify-content: center;
+    font-family: "Inter", sans-serif;
+    font-weight: 700;
+    font-size: 14px;
+  }
+  .signer-card .who { font-family: "Inter", sans-serif; font-size: 13px; line-height: 1.3; }
+  .signer-card .who strong { display: block; font-weight: 600; color: var(--ink); }
+  .signer-card .who span { color: var(--ink-mute); font-size: 11px; }
+
+  /* ============= TABLES (risk + stakeholder) ============= */
+  .data-table {
+    width: 100%;
+    margin-top: 16px;
+    border-collapse: collapse;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+  }
+  .data-table thead th {
+    text-align: left;
+    padding: 10px 12px;
+    font-size: 10px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    color: var(--warm);
+    border-bottom: 1px solid rgba(196, 154, 42, 0.3);
+  }
+  .data-table tbody td {
+    padding: 12px;
+    border-bottom: 1px solid rgba(246, 241, 225, 0.06);
+    color: var(--ink-soft);
+    line-height: 1.55;
+    vertical-align: top;
+  }
+  .data-table tbody td:first-child { color: var(--ink); font-weight: 500; width: 32%; }
+  .data-table a { color: var(--warm); text-decoration: none; border-bottom: 1px dotted var(--gold); }
+  .data-table a:hover { color: var(--gold-glow); }
+
+  /* ============= PROOF CARDS ============= */
+  .proof-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 18px;
+    margin-top: 16px;
+  }
+  .proof-card {
+    background: rgba(13, 10, 5, 0.55);
+    border: 1px solid rgba(196, 154, 42, 0.18);
+    border-radius: 12px;
+    padding: 22px 24px;
+  }
+  .proof-card .pc-tag {
+    display: inline-block;
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--warm);
+    background: rgba(196, 154, 42, 0.12);
+    padding: 4px 10px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+  }
+  .proof-card h4 {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-weight: 500;
+    font-size: clamp(20px, 2vw, 26px);
+    color: var(--ink);
+    margin-bottom: 8px;
+    line-height: 1.25;
+  }
+  .proof-card p {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.65;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  /* ============= NEXT 30 DAYS TIMELINE ============= */
+  .day-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px 22px;
+    margin-top: 18px;
+  }
+  @media (max-width: 700px) { .day-grid { grid-template-columns: 1fr; } }
+  .day-cell {
+    border: 1px solid rgba(196, 154, 42, 0.18);
+    border-radius: 10px;
+    padding: 16px 18px;
+    background: rgba(13, 10, 5, 0.4);
+  }
+  .day-cell .week {
+    font-family: "Inter", sans-serif;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 8px;
+  }
+  .day-cell .what {
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    line-height: 1.55;
+    color: var(--ink-soft);
+  }
+  .day-cell .what strong { color: var(--ink); font-weight: 600; }
+
+  /* ============= IRIS TRANSITION ============= */
+  .iris-transition {
+    position: relative;
+    width: 100%;
+    height: 50vh;
+    background: var(--parchment-edge);
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .iris-transition::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, transparent 0%, var(--parchment-edge) 65%);
+  }
+  .iris-circle {
+    width: min(36vw, 280px);
+    height: min(36vw, 280px);
+    border-radius: 50%;
+    background:
+      radial-gradient(circle at 35% 35%, rgba(255, 212, 112, 0.15), transparent 60%),
+      linear-gradient(135deg, #1a3a4a, #0d2530);
+    box-shadow:
+      0 0 80px rgba(196, 154, 42, 0.3),
+      inset 0 0 60px rgba(0, 0, 0, 0.5);
+    position: relative;
+    z-index: 2;
+    animation: iris-bloom 5s ease-in-out infinite;
+  }
+  @keyframes iris-bloom {
+    0%, 100% { transform: scale(0.92); box-shadow: 0 0 60px rgba(196, 154, 42, 0.2), inset 0 0 60px rgba(0, 0, 0, 0.55); }
+    50% { transform: scale(1.04); box-shadow: 0 0 100px rgba(196, 154, 42, 0.4), inset 0 0 50px rgba(0, 0, 0, 0.4); }
+  }
+  .iris-label {
+    position: absolute;
+    bottom: 9vh;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: clamp(18px, 2.2vw, 26px);
+    color: var(--gold-glow);
+    letter-spacing: 0.06em;
+    text-align: center;
+    z-index: 3;
+  }
+
+  /* ============= FLOATING WHATSAPP CTA ============= */
+  .wa-float {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-decoration: none;
+    color: #fff;
+    background: var(--whatsapp);
+    padding: 14px 22px;
+    border-radius: 999px;
+    box-shadow: 0 12px 30px rgba(37, 211, 102, 0.4);
+    z-index: 100;
+    transition: transform 0.2s ease;
+  }
+  .wa-float:hover { transform: translateY(-2px); }
+  .wa-float svg { width: 18px; height: 18px; flex-shrink: 0; }
+
+  /* ============= SOW LINK ============= */
+  .sow-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 18px;
+    font-family: "Inter", sans-serif;
+    font-size: 13px;
+    color: var(--warm);
+    text-decoration: none;
+    border-bottom: 1px dotted var(--gold);
+    padding-bottom: 2px;
+    width: fit-content;
+  }
+  .sow-link:hover { color: var(--gold-glow); }
+  .sow-link svg { width: 14px; height: 14px; flex-shrink: 0; stroke: currentColor; fill: none; stroke-width: 2; }
+
+  /* ============= FOOTER META ============= */
+  .footer-meta {
+    margin-top: 32px;
+    padding-top: 24px;
+    border-top: 1px solid rgba(246, 241, 225, 0.1);
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    color: var(--ink-mute);
+    line-height: 1.8;
+    text-align: center;
+  }
+  .footer-meta a { color: var(--gold-glow); text-decoration: none; }
+  .footer-meta a:hover { text-decoration: underline; }
+
+  /* ============= MOBILE POLISH ============= */
+  @media (max-width: 768px) {
+    .video-overlay { padding: 0 6vw; }
+    h1 { font-size: clamp(34px, 9vw, 56px); }
+    h2 { font-size: clamp(26px, 7vw, 40px); }
+    .lede { font-size: 15px; }
+    .chapter { padding: 90px 6vw; min-height: auto; }
+    .chapter::before { top: 50px; }
+    .chapter::after { bottom: 50px; }
+    .pricing-card { padding: 24px 20px; }
+    .pricing-card .price { font-size: clamp(38px, 11vw, 52px); }
+    .wa-float { bottom: 16px; right: 16px; padding: 12px 18px; font-size: 13px; }
+    .signer-card { padding: 8px 16px 8px 10px; }
+    .signer-card .avatar { width: 36px; height: 36px; font-size: 12px; }
+    .stage-label { margin-top: 10vh; }
+    .hero-price { padding: 12px 16px; }
+    .hero-price .num { font-size: 28px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .video-panel video { display: none; }
+    .video-panel { background: #15110b; }
+    .iris-circle { animation: none; }
+  }
+
+  /* ============= EXPIRY OVERLAY (auto-shown after 30 days) ============= */
+  .expired {
+    position: fixed; inset: 0; background: var(--parchment-edge); z-index: 9999;
+    display: flex; align-items: center; justify-content: center; flex-direction: column;
+    text-align: center; padding: 40px;
+    font-family: "Inter", sans-serif;
+  }
+  .expired h2 { color: var(--ink); font-family: "Cormorant Garamond", serif; font-style: italic; margin-bottom: 16px; }
+  .expired p { color: var(--ink-soft); max-width: 500px; line-height: 1.6; }
+  .expired a { color: var(--gold-glow); margin-top: 24px; }
+</style>
+<style>
+/* === Fantasy Bakery palette override === */
+/* Fantasy Bakery palette override - swaps the v4 dark-parchment chapter cards
+   to bright pastel cream cards with warm-dark text. Video panels keep
+   cream-on-dark for legibility over moving footage.
+   v3 (2026-05-09): adds panel-tag system, top-left hero overlay with scrim,
+   bifurcated pricing, campaign-example cards. */
+
+:root {
+  /* Fantasy palette tokens */
+  --fb-cream: #FFFBF6;
+  --fb-cream-warm: #FAF1E8;
+  --fb-pink-soft: #F4E8F2;
+  --fb-pink-brand: #F7B6CD;
+  --fb-blue-brand: #A9C9F5;
+  --fb-lavender: #C8B6F2;
+  --fb-gold: #D4AF37;
+  --fb-gold-glow: #E8C75C;
+  --fb-ink: #2A2A2A;
+  --fb-ink-soft: rgba(42, 42, 42, 0.78);
+  --fb-ink-mute: rgba(42, 42, 42, 0.55);
+  --fb-ink-low: rgba(42, 42, 42, 0.32);
+}
+
+/* ---- Chapter cards: cream + pastel-pink wash + warm-dark text ---- */
+.chapter {
+  background:
+    radial-gradient(ellipse at top, rgba(247, 182, 205, 0.18), transparent 55%),
+    radial-gradient(ellipse at bottom, rgba(169, 201, 245, 0.14), transparent 55%),
+    linear-gradient(180deg, var(--fb-cream) 0%, var(--fb-cream-warm) 30%, var(--fb-pink-soft) 70%, var(--fb-cream) 100%) !important;
+}
+.chapter::before, .chapter::after {
+  background: linear-gradient(90deg, transparent, var(--fb-gold), transparent) !important;
+}
+.chapter-num {
+  color: var(--fb-gold) !important;
+  font-size: 13px !important;
+  letter-spacing: 0.32em !important;
+}
+.chapter-title {
+  color: var(--fb-ink) !important;
+  text-shadow: none !important;
+  font-style: normal !important;
+  font-weight: 500 !important;
+}
+.chapter-glyph { color: var(--fb-gold) !important; }
+.chapter-body {
+  color: var(--fb-ink-soft) !important;
+}
+.chapter-body strong { color: var(--fb-ink) !important; font-weight: 600; }
+.chapter-body em {
+  color: #B8860B !important;
+  font-style: italic;
+}
+.chapter-body p { margin-bottom: 18px; }
+
+/* Deliverables bullets */
+.deliverables li { color: var(--fb-ink-soft) !important; }
+.deliverables li strong { color: var(--fb-ink) !important; }
+.deliverables li::before { background: var(--fb-gold) !important; }
+
+/* ---- Bucketed feature scope (chapter III) ---- */
+.feature-buckets {
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+.feature-bucket {
+  border-top: 1px solid rgba(212, 175, 55, 0.25);
+  padding-top: 18px;
+}
+.feature-bucket-name {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #B8860B;
+  margin-bottom: 14px;
+}
+.feature-bucket ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px 28px;
+}
+@media (max-width: 700px) {
+  .feature-bucket ul { grid-template-columns: 1fr; }
+}
+.feature-bucket li {
+  font-family: "Inter", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--fb-ink-soft);
+  padding-left: 18px;
+  position: relative;
+}
+.feature-bucket li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 9px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--fb-gold);
+}
+.feature-bucket li strong { color: var(--fb-ink); font-weight: 600; }
+
+/* ---- Campaign-example cards (chapter IV) ---- */
+.campaign-grid {
+  margin: 28px 0;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.campaign-example {
+  background: linear-gradient(135deg, rgba(247, 182, 205, 0.14), rgba(169, 201, 245, 0.10));
+  border: 1px solid rgba(212, 175, 55, 0.28);
+  border-radius: 12px;
+  padding: 18px 22px;
+}
+.campaign-title {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--fb-ink);
+  margin-bottom: 4px;
+}
+.campaign-angle {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: var(--fb-ink-mute);
+  margin-bottom: 12px;
+  font-style: italic;
+}
+.campaign-broadcast {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--fb-ink-soft);
+  background: rgba(255, 255, 255, 0.6);
+  border-left: 3px solid var(--fb-gold);
+  border-radius: 0 6px 6px 0;
+  padding: 12px 16px;
+  margin: 0;
+}
+
+/* ---- Bifurcated pricing (chapter V) ---- */
+.bifurcated-setup {
+  margin: 28px 0 12px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+@media (max-width: 700px) {
+  .bifurcated-setup { grid-template-columns: 1fr; }
+}
+.setup-half {
+  background: linear-gradient(135deg, rgba(247, 182, 205, 0.16), rgba(169, 201, 245, 0.10));
+  border: 1px solid rgba(212, 175, 55, 0.32);
+  border-radius: 14px;
+  padding: 22px 24px;
+}
+.setup-half-label {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #B8860B;
+  margin-bottom: 6px;
+}
+.setup-half-amount {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(30px, 3.6vw, 42px);
+  font-weight: 500;
+  color: var(--fb-ink);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.setup-half-note {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  line-height: 1.5;
+  color: var(--fb-ink-mute);
+}
+.setup-total-line {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  color: var(--fb-ink-mute);
+  text-align: center;
+  padding: 10px 0 28px;
+  border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
+  margin-bottom: 28px;
+}
+.setup-total-line strong { color: var(--fb-ink); font-weight: 600; }
+
+.bifurcated-monthly {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 22px;
+  margin-bottom: 18px;
+}
+@media (max-width: 700px) {
+  .bifurcated-monthly { grid-template-columns: 1fr; }
+}
+.monthly-half {
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--fb-cream) 100%);
+  border: 1.5px solid var(--fb-gold);
+  border-radius: 14px;
+  padding: 22px 24px;
+  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.12);
+}
+.monthly-half-label {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #B8860B;
+  margin-bottom: 8px;
+}
+.monthly-half-amount {
+  font-family: "Cormorant Garamond", serif;
+  font-size: clamp(36px, 4vw, 52px);
+  font-weight: 500;
+  color: var(--fb-ink);
+  letter-spacing: -0.02em;
+  line-height: 1;
+  margin-bottom: 14px;
+}
+.monthly-half-amount .per {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  font-weight: 400;
+  color: var(--fb-ink-soft);
+  margin-left: 6px;
+}
+.monthly-half ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+.monthly-half li {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--fb-ink-soft);
+  padding: 8px 0 8px 18px;
+  position: relative;
+  border-bottom: 1px solid rgba(212, 175, 55, 0.14);
+}
+.monthly-half li:last-child { border-bottom: none; }
+.monthly-half li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--fb-gold);
+}
+.monthly-total-line {
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  color: var(--fb-ink-soft);
+  text-align: center;
+  margin: 18px 0 22px;
+  padding: 14px 0;
+  border-top: 1px dashed rgba(212, 175, 55, 0.3);
+  border-bottom: 1px dashed rgba(212, 175, 55, 0.3);
+}
+.monthly-total-line strong { color: var(--fb-ink); font-weight: 600; }
+.monthly-cta-row { text-align: center; margin-bottom: 22px; }
+.terms-fine {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  color: var(--fb-ink-mute);
+  line-height: 1.65;
+  text-align: center;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+/* ---- Kill the v4 template's heavy global video vignettes ----
+   The default proposal-v4 template adds a radial darkening + a 0.6/0.75
+   linear gradient across every video panel, plus a 0.4 top/bottom band on
+   atmospheric panels. Those were tuned for dark Ghibli landscapes; on
+   bright pastel photography they read as a "weird black screen" muddying
+   the image. We rely on localized text-zone scrims (.video-overlay.top-left
+   ::before, .video-overlay.bottom::before) for legibility instead. */
+.video-panel::before,
+.video-panel::after,
+.video-panel.atmos::before,
+.video-panel.atmos::after {
+  background: none !important;
+  display: none !important;
+}
+
+/* ---- Video panel text colors: dark on bright pastel backgrounds ----
+   Fantasy's videos are bright cream/pink/white photography; cream-on-cream
+   was invisible. Dark ink + dark gold + white-halo text-shadow gives contrast
+   on every pastel background while still reading off any darker patches. */
+.video-overlay.top-left {
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-top: 12vh;
+  position: relative;
+}
+.video-overlay.top-left::before { content: none; }
+.video-overlay.top-left > * { position: relative; z-index: 2; }
+.video-overlay.top-left .eyebrow {
+  letter-spacing: 0.28em;
+  color: #B8860B !important;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.85), 0 0 12px rgba(255, 255, 255, 0.5);
+}
+
+/* Hero two-beat title - dark ink + dark gold for contrast on bright cake video */
+.hero-h1 {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #2A2A2A !important;
+  font-size: clamp(40px, 5.6vw, 72px);
+  line-height: 1.06;
+  letter-spacing: -0.015em;
+  margin-bottom: 22px;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.92), 0 0 18px rgba(255, 255, 255, 0.55), 0 2px 6px rgba(255, 255, 255, 0.6);
+  max-width: 900px;
+}
+.hero-h1-soft {
+  display: block;
+  margin-top: 14px;
+  font-size: clamp(28px, 3.4vw, 44px);
+  line-height: 1.12;
+  color: #B8860B !important;
+  font-style: italic;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.92), 0 0 14px rgba(255, 255, 255, 0.5);
+}
+
+/* ---- Atmospheric panel-tag - dark ink for contrast on bright pastels ---- */
+.panel-tag {
+  align-self: flex-start;
+  max-width: 760px;
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(26px, 3.2vw, 40px);
+  line-height: 1.18;
+  letter-spacing: 0.005em;
+  color: #2A2A2A;
+  margin-top: 0;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.92), 0 0 18px rgba(255, 255, 255, 0.55), 0 2px 6px rgba(255, 255, 255, 0.6);
+}
+.panel-tag .em {
+  color: #B8860B;
+  font-style: italic;
+  display: block;
+  margin-top: 4px;
+}
+
+/* Per-panel override: panel 5 (birthday) has a darker top-left text zone
+   (dad's shirt + apartment shadow) so dark text would disappear. Use light
+   text with dark halo only on this panel. The brightness analyzer flagged it. */
+#panel-5 .panel-tag {
+  color: #f6f1e1;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.85), 0 0 18px rgba(0, 0, 0, 0.6);
+}
+#panel-5 .panel-tag .em {
+  color: #ffd470;
+}
+@media (max-width: 700px) {
+  .panel-tag { font-size: clamp(22px, 6.2vw, 30px); }
+}
+
+/* Atmospheric panel uses top-left overlay too (with the scrim) */
+.video-panel.atmos .video-overlay.top-left {
+  padding-top: 10vh;
+}
+
+/* Closer overlay: no scrim. Text-shadow alone carries legibility. */
+.video-panel .video-overlay.bottom::before { content: none; }
+.video-panel .video-overlay.bottom { position: relative; }
+.video-panel .video-overlay.bottom > * { position: relative; z-index: 2; }
+.video-panel .video-overlay.bottom h2 {
+  font-family: "Cormorant Garamond", serif;
+  font-style: italic;
+  font-weight: 400;
+  color: #2A2A2A !important;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.92), 0 0 18px rgba(255, 255, 255, 0.55), 0 2px 6px rgba(255, 255, 255, 0.55);
+}
+.video-panel .video-overlay.bottom .lede {
+  color: rgba(42, 42, 42, 0.85) !important;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.85), 0 0 10px rgba(255, 255, 255, 0.5);
+}
+.video-panel .video-overlay.bottom .lede strong { color: #2A2A2A !important; }
+
+/* CTA buttons: keep gold gradient, dark text */
+.pricing-card .cta,
+.chapter .cta,
+.monthly-cta-row .cta {
+  color: #2A2A2A !important;
+  background: linear-gradient(135deg, var(--fb-gold-glow), var(--fb-gold)) !important;
+  box-shadow: 0 12px 30px rgba(212, 175, 55, 0.32) !important;
+}
+.pricing-card .cta:hover,
+.chapter .cta:hover {
+  box-shadow: 0 16px 36px rgba(212, 175, 55, 0.45) !important;
+}
+
+/* Mobile: tighten chapter padding */
+@media (max-width: 700px) {
+  .chapter { padding: 80px 6vw; }
+  .setup-half, .monthly-half, .campaign-example { padding: 18px 20px; }
+}
+
+/* ============================================================
+   CHAPTER ANIMATIONS - pure SVG/CSS, prefers-reduced-motion handled
+   ============================================================ */
+
+/* fb-pipe: 5-node pipeline diagram with travelling gold dot */
+.fb-pipe {
+  margin: 30px 0 8px;
+  padding: 28px 16px 22px;
+  background: linear-gradient(135deg, rgba(247, 182, 205, 0.10), rgba(169, 201, 245, 0.07));
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  border-radius: 14px;
+}
+.fb-pipe svg {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.fb-pipe .fb-pipe-track {
+  stroke: rgba(212, 175, 55, 0.30);
+  stroke-width: 1.5;
+  fill: none;
+  stroke-dasharray: 3 6;
+}
+.fb-pipe .fb-pipe-node {
+  fill: #FFFBF6;
+  stroke: #D4AF37;
+  stroke-width: 2;
+}
+.fb-pipe .fb-pipe-halo {
+  fill: none;
+  stroke: #E8C75C;
+  stroke-width: 2;
+  opacity: 0;
+  transform-origin: center;
+  transform-box: fill-box;
+}
+.fb-pipe .fb-pipe-dot { fill: #D4AF37; }
+.fb-pipe-labels {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 6px;
+  max-width: 720px;
+  margin: 14px auto 0;
+  padding: 0 4px;
+}
+.fb-pipe-labels span {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: #B8860B;
+  text-align: center;
+}
+@keyframes fb-pipe-travel {
+  0%   { offset-distance: 0%; }
+  18%  { offset-distance: 25%; }
+  22%  { offset-distance: 25%; }
+  40%  { offset-distance: 50%; }
+  44%  { offset-distance: 50%; }
+  62%  { offset-distance: 75%; }
+  66%  { offset-distance: 75%; }
+  88%  { offset-distance: 100%; }
+  100% { offset-distance: 100%; }
+}
+.fb-pipe-dot {
+  offset-path: path('M 60 45 L 220 45 L 380 45 L 540 45 L 700 45');
+  animation: fb-pipe-travel 7s ease-in-out infinite;
+}
+@keyframes fb-pipe-pulse {
+  0%, 8%   { opacity: 0; transform: scale(1); }
+  4%       { opacity: 0.85; transform: scale(2.4); }
+  100%     { opacity: 0; transform: scale(1); }
+}
+.fb-pipe-halo-1 { animation: fb-pipe-pulse 7s ease-in-out infinite; animation-delay: 0s; }
+.fb-pipe-halo-2 { animation: fb-pipe-pulse 7s ease-in-out infinite; animation-delay: 1.4s; }
+.fb-pipe-halo-3 { animation: fb-pipe-pulse 7s ease-in-out infinite; animation-delay: 2.8s; }
+.fb-pipe-halo-4 { animation: fb-pipe-pulse 7s ease-in-out infinite; animation-delay: 4.2s; }
+.fb-pipe-halo-5 { animation: fb-pipe-pulse 7s ease-in-out infinite; animation-delay: 5.6s; }
+
+@media (max-width: 600px) {
+  .fb-pipe-labels span { font-size: 9px; letter-spacing: 0.04em; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fb-pipe-dot, .fb-pipe-halo-1, .fb-pipe-halo-2, .fb-pipe-halo-3, .fb-pipe-halo-4, .fb-pipe-halo-5 {
+    animation: none !important;
+  }
+  .fb-pipe-dot { offset-distance: 50% !important; }
+  .fb-pipe-halo-1, .fb-pipe-halo-2, .fb-pipe-halo-3, .fb-pipe-halo-4, .fb-pipe-halo-5 { opacity: 0; }
+}
+
+/* fb-chat: WhatsApp-style chat bubble exchange */
+.fb-chat {
+  margin: 30px auto 10px;
+  padding: 24px 22px 20px;
+  max-width: 580px;
+  background: linear-gradient(135deg, rgba(247, 182, 205, 0.08), rgba(169, 201, 245, 0.06));
+  border: 1px solid rgba(212, 175, 55, 0.20);
+  border-radius: 14px;
+}
+.fb-chat-row { display: flex; margin-bottom: 12px; }
+.fb-chat-row.left { justify-content: flex-start; }
+.fb-chat-row.right { justify-content: flex-end; }
+.fb-chat-bubble {
+  max-width: 78%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-family: "Inter", sans-serif;
+  font-size: 13px;
+  line-height: 1.5;
+  opacity: 0;
+}
+.fb-chat-in {
+  background: #FFFFFF;
+  color: #2A2A2A;
+  border: 1px solid rgba(42, 42, 42, 0.08);
+  border-bottom-left-radius: 4px;
+  animation: fb-chat-slidein 8s ease-in-out infinite;
+  animation-delay: 0.2s;
+}
+.fb-chat-typing {
+  display: inline-flex;
+  gap: 4px;
+  padding: 12px 14px;
+  background: #FFFFFF;
+  border-radius: 16px;
+  border: 1px solid rgba(42, 42, 42, 0.08);
+  border-bottom-left-radius: 4px;
+  opacity: 0;
+  animation: fb-chat-typing-show 8s ease-in-out infinite;
+  animation-delay: 1.4s;
+}
+.fb-chat-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #D4AF37;
+  animation: fb-chat-typing-dot 1.1s ease-in-out infinite;
+}
+.fb-chat-typing span:nth-child(2) { animation-delay: 0.18s; }
+.fb-chat-typing span:nth-child(3) { animation-delay: 0.36s; }
+.fb-chat-out {
+  background: linear-gradient(135deg, #DCF8C6, #C8EFB0);
+  color: #2A2A2A;
+  border-bottom-right-radius: 4px;
+  animation: fb-chat-slidein 8s ease-in-out infinite;
+  animation-delay: 3.2s;
+}
+.fb-chat-attach {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 8px;
+  padding: 6px 10px;
+  background: rgba(255, 255, 255, 0.65);
+  border-radius: 8px;
+  font-size: 11px;
+  color: #2A2A2A;
+}
+.fb-chat-attach svg {
+  width: 13px;
+  height: 13px;
+  flex-shrink: 0;
+  color: #B8860B;
+}
+.fb-chat-confirm {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.10em;
+  text-transform: uppercase;
+  color: #B8860B;
+  text-align: right;
+  opacity: 0;
+  animation: fb-chat-slidein 8s ease-in-out infinite;
+  animation-delay: 5.4s;
+}
+.fb-chat-check {
+  stroke-dasharray: 26;
+  stroke-dashoffset: 26;
+  animation: fb-chat-draw 8s ease-in-out infinite;
+  animation-delay: 5.8s;
+}
+@keyframes fb-chat-slidein {
+  0%, 1%   { opacity: 0; transform: translateY(8px); }
+  4%, 95%  { opacity: 1; transform: translateY(0); }
+  100%     { opacity: 1; transform: translateY(0); }
+}
+@keyframes fb-chat-typing-show {
+  0%, 12%  { opacity: 0; }
+  15%, 35% { opacity: 1; }
+  38%, 100%{ opacity: 0; }
+}
+@keyframes fb-chat-typing-dot {
+  0%, 60%, 100% { opacity: 0.25; transform: translateY(0); }
+  30%           { opacity: 1; transform: translateY(-3px); }
+}
+@keyframes fb-chat-draw {
+  0%, 70%   { stroke-dashoffset: 26; }
+  82%, 100% { stroke-dashoffset: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fb-chat-bubble, .fb-chat-confirm { animation: none !important; opacity: 1; transform: none; }
+  .fb-chat-typing { display: none; }
+  .fb-chat-check { animation: none !important; stroke-dashoffset: 0 !important; }
+}
+
+/* fb-cost: rent vs cake-price divergence chart (chapter I) */
+.fb-cost {
+  margin: 30px 0 8px;
+  padding: 28px 18px 22px;
+  background: linear-gradient(135deg, rgba(247, 182, 205, 0.10), rgba(169, 201, 245, 0.06));
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  border-radius: 14px;
+}
+.fb-cost svg {
+  width: 100%;
+  max-width: 720px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+}
+.fb-cost-axis { stroke: rgba(42, 42, 42, 0.18); stroke-width: 1; }
+.fb-cost-tick {
+  fill: rgba(42, 42, 42, 0.55);
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 500;
+}
+.fb-cost-y {
+  fill: rgba(42, 42, 42, 0.55);
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  font-weight: 500;
+}
+.fb-cost-rent {
+  stroke: #C44569;
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 700;
+  stroke-dashoffset: 700;
+  animation: fb-cost-draw 6s ease-out infinite;
+}
+.fb-cost-cake {
+  stroke: #A9C9F5;
+  stroke-width: 3;
+  fill: none;
+  stroke-linecap: round;
+  stroke-dasharray: 640;
+  stroke-dashoffset: 640;
+  animation: fb-cost-draw 6s ease-out infinite;
+  animation-delay: 0.4s;
+}
+.fb-cost-gap {
+  opacity: 0;
+  animation: fb-cost-gap-fade 6s ease-in-out infinite;
+  animation-delay: 1.6s;
+}
+.fb-cost-pulse {
+  fill: #C44569;
+  opacity: 0;
+  animation: fb-cost-pulse 6s ease-in-out infinite;
+  animation-delay: 2.4s;
+}
+.fb-cost-label {
+  font-family: "Inter", sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0;
+  animation: fb-cost-label-fade 6s ease-in-out infinite;
+}
+.fb-cost-label-rent { fill: #C44569; animation-delay: 1.2s; }
+.fb-cost-label-cake { fill: #6791D1; animation-delay: 1.4s; }
+.fb-cost-caption {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  line-height: 1.6;
+  color: rgba(42, 42, 42, 0.62);
+  text-align: center;
+  margin: 14px auto 0;
+  max-width: 600px;
+}
+.fb-cost-caption em { color: #B8860B; font-style: italic; }
+@keyframes fb-cost-draw {
+  0%       { stroke-dashoffset: 700; }
+  35%      { stroke-dashoffset: 0; }
+  90%, 100%{ stroke-dashoffset: 0; }
+}
+@keyframes fb-cost-gap-fade {
+  0%, 28%  { opacity: 0; }
+  44%, 90% { opacity: 1; }
+  100%     { opacity: 1; }
+}
+@keyframes fb-cost-label-fade {
+  0%, 22%  { opacity: 0; }
+  35%, 90% { opacity: 1; }
+  100%     { opacity: 1; }
+}
+@keyframes fb-cost-pulse {
+  0%, 38%  { opacity: 0; r: 4; }
+  46%      { opacity: 0.85; r: 10; }
+  56%, 90% { opacity: 0.6; r: 6; }
+  100%     { opacity: 0.6; r: 6; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fb-cost-rent, .fb-cost-cake { stroke-dashoffset: 0 !important; animation: none !important; }
+  .fb-cost-gap, .fb-cost-pulse, .fb-cost-label { opacity: 1 !important; animation: none !important; }
+}
+
+/* fb-arch: system architecture diagram (chapter III) */
+.fb-arch {
+  margin: 28px 0 8px;
+  padding: 28px 22px 24px;
+  background: linear-gradient(135deg, rgba(247, 182, 205, 0.10), rgba(169, 201, 245, 0.06));
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.fb-arch-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr 1fr;
+  align-items: center;
+  gap: 14px;
+  max-width: 760px;
+  margin: 0 auto;
+}
+.fb-arch-core {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 8px;
+  align-items: center;
+}
+.fb-arch-side {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.fb-arch-node {
+  background: linear-gradient(180deg, #FFFFFF 0%, var(--fb-cream) 100%);
+  border: 1.5px solid rgba(212, 175, 55, 0.45);
+  border-radius: 12px;
+  padding: 12px 10px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 4px 14px rgba(212, 175, 55, 0.10);
+  animation: fb-arch-pulse 8s ease-in-out infinite;
+}
+.fb-arch-customer { animation-delay: 0s; }
+.fb-arch-kitchen  { animation-delay: 1.2s; }
+.fb-arch-fridges  { animation-delay: 2.4s; }
+.fb-arch-delivery { animation-delay: 3.6s; }
+.fb-arch-ai       { animation-delay: 4.8s; }
+.fb-arch-admin    { animation-delay: 6.0s; }
+.fb-arch-icon { font-size: 20px; line-height: 1; margin-bottom: 6px; }
+.fb-arch-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 14px;
+  font-weight: 500;
+  color: #2A2A2A;
+  margin-bottom: 2px;
+}
+.fb-arch-sub {
+  font-family: "Inter", sans-serif;
+  font-size: 10px;
+  color: rgba(42, 42, 42, 0.55);
+  line-height: 1.35;
+}
+.fb-arch-conn {
+  height: 1.5px;
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.45), rgba(212, 175, 55, 0.20));
+  border-radius: 1px;
+  position: relative;
+}
+.fb-arch-conn::after {
+  content: "";
+  position: absolute;
+  right: -3px;
+  top: 50%;
+  transform: translateY(-50%);
+  border: 4px solid transparent;
+  border-left-color: rgba(212, 175, 55, 0.45);
+}
+@keyframes fb-arch-pulse {
+  0%, 8%   { box-shadow: 0 4px 14px rgba(212, 175, 55, 0.10); border-color: rgba(212, 175, 55, 0.45); }
+  4%       { box-shadow: 0 6px 22px rgba(212, 175, 55, 0.45); border-color: rgba(212, 175, 55, 0.85); }
+  100%     { box-shadow: 0 4px 14px rgba(212, 175, 55, 0.10); }
+}
+@media (max-width: 700px) {
+  .fb-arch-grid { grid-template-columns: 1fr; gap: 10px; }
+  .fb-arch-core { grid-template-columns: 1fr; gap: 8px; }
+  .fb-arch-side { flex-direction: row; }
+  .fb-arch-conn { height: 16px; width: 1.5px; margin: 0 auto; background: linear-gradient(180deg, rgba(212, 175, 55, 0.45), rgba(212, 175, 55, 0.20)); }
+  .fb-arch-conn::after { right: 50%; top: auto; bottom: -3px; transform: translateX(50%); border-left-color: transparent; border-top-color: rgba(212, 175, 55, 0.45); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fb-arch-node { animation: none !important; }
+}
+
+/* fb-ip: Data Ownership / Platform IP / Third-party 3-column visual (chapter VI) */
+.fb-ip {
+  margin: 26px 0 18px;
+  padding: 28px 22px 24px;
+  background: linear-gradient(135deg, rgba(247, 182, 205, 0.10), rgba(169, 201, 245, 0.06));
+  border: 1px solid rgba(212, 175, 55, 0.22);
+  border-radius: 14px;
+}
+.fb-ip-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 18px;
+  max-width: 820px;
+  margin: 0 auto;
+}
+@media (max-width: 700px) {
+  .fb-ip-grid { grid-template-columns: 1fr; gap: 14px; }
+}
+.fb-ip-col {
+  background: #FFFFFF;
+  border: 1px solid rgba(212, 175, 55, 0.30);
+  border-radius: 12px;
+  padding: 18px 18px 16px;
+  text-align: left;
+}
+.fb-ip-icon {
+  font-size: 22px;
+  margin-bottom: 8px;
+  line-height: 1;
+}
+.fb-ip-label {
+  font-family: "Cormorant Garamond", serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #2A2A2A;
+  margin-bottom: 8px;
+}
+.fb-ip-summary {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  line-height: 1.55;
+  color: rgba(42, 42, 42, 0.72);
+}
+.fb-ip-summary strong { color: #2A2A2A; font-weight: 600; }
+
+/* Footer meta inside closer overlay: dark on bright video, white halo */
+.footer-meta {
+  font-family: "Inter", sans-serif;
+  font-size: 12px;
+  line-height: 1.7;
+  color: rgba(42, 42, 42, 0.78) !important;
+  margin-top: 22px;
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.85), 0 0 8px rgba(255, 255, 255, 0.5);
+}
+.footer-meta a { color: rgba(42, 42, 42, 0.95) !important; text-decoration: underline; text-decoration-color: rgba(184, 134, 11, 0.5); }
+
+</style>
+</head>
+<body>
+<section class="block" data-block="1" id="panel-1"><div class="video-panel"><video autoplay loop muted playsinline preload="auto"><source src="assets/mobile-A/panel-1-custom-cake-reveal-mobile-A.mp4" media="(max-aspect-ratio: 1/1)" type="video/mp4"><source src="assets/panel-1-custom-cake-reveal-loop.mp4" type="video/mp4"></video><div class="video-overlay top-left"><div class="eyebrow">For Fantasy Bakery 'n' Patisserie · Pune</div><h1 class="hero-h1">One day, the kitchen runs the bakery.<span class="hero-h1-soft">Today, we build the platform.</span></h1></div></div></section>
+
+<section class="chapter"><div class="chapter-inner"><div class="chapter-num">I</div><div class="chapter-title">The math of brick-and-mortar bakery has stopped working.</div><div class="chapter-glyph">- &#11045; -</div><div class="chapter-body"><p>The rent on a single Fantasy outlet has moved from <strong>₹50,000</strong> to <strong>₹90,000</strong> a month, and it has not finished climbing. A designer cake still sells at roughly <strong>₹500</strong>, and that number is not flexible. A parent buying a child's birthday cake will not pay ₹900; the social ceiling for a family-occasion cake in Pune sits between ₹500 and ₹700. Across five outlets, the rent gap alone is over <strong>₹2,00,000</strong> of fixed cost a month that the cake price cannot absorb.</p><p>This is not a bad quarter. Rent in Pune moves in one direction. A designer cake's price is anchored to what a household considers reasonable for an occasion. The two lines do not meet again. Every renewal cycle widens the gap, and every new outlet inherits the same arithmetic. The squeeze is structural - it lives in the shape of the business, not in a season or a slowdown.</p><p>The honest read is that the storefront model for designer cake in Pune has eighteen to thirty-six months of viable runway, and the people running Fantasy can already feel it in the monthly numbers. The question worth sitting with is not how to defend the shopfronts. It is what the bakery looks like when the shopfronts are no longer the unit of the business.<br/><em>The format is ending. The bakery does not have to.</em></p><div class="fb-cost" role="img" aria-label="Cost squeeze chart: rent rises from 50,000 to 90,000 rupees per month while cake price stays flat at 500 rupees">
+  <svg viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <defs>
+      <linearGradient id="fb-cost-fill" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#F7B6CD" stop-opacity="0.45"/>
+        <stop offset="100%" stop-color="#F7B6CD" stop-opacity="0.05"/>
+      </linearGradient>
+    </defs>
+    <line class="fb-cost-axis" x1="60" y1="240" x2="690" y2="240" />
+    <line class="fb-cost-axis" x1="60" y1="40" x2="60" y2="240" />
+    <text class="fb-cost-tick" x="60" y="262" text-anchor="middle">Today</text>
+    <text class="fb-cost-tick" x="375" y="262" text-anchor="middle">+18 months</text>
+    <text class="fb-cost-tick" x="690" y="262" text-anchor="middle">+36 months</text>
+    <text class="fb-cost-y" x="50" y="80" text-anchor="end">₹90K</text>
+    <text class="fb-cost-y" x="50" y="148" text-anchor="end">₹70K</text>
+    <text class="fb-cost-y" x="50" y="216" text-anchor="end">₹50K</text>
+    <path class="fb-cost-gap" d="M 60 148 L 690 80 L 690 226 L 60 226 Z" fill="url(#fb-cost-fill)" />
+    <path class="fb-cost-rent" d="M 60 148 L 690 80" />
+    <text class="fb-cost-label fb-cost-label-rent" x="680" y="62" text-anchor="end">Rent per outlet</text>
+    <path class="fb-cost-cake" d="M 60 226 L 690 226" />
+    <text class="fb-cost-label fb-cost-label-cake" x="680" y="218" text-anchor="end">Cake price ceiling ~₹500</text>
+    <circle class="fb-cost-pulse" cx="375" cy="114" r="6" />
+  </svg>
+  <div class="fb-cost-caption">The two lines do not meet again. <em>The squeeze is structural, not seasonal.</em></div>
+</div></div></div></section>
+
+<section class="block" data-block="2" id="panel-2"><div class="video-panel atmos"><video autoplay loop muted playsinline preload="auto"><source src="assets/mobile-A/panel-2-cheesecake-slice-mobile-A.mp4" media="(max-aspect-ratio: 1/1)" type="video/mp4"><source src="assets/panel-2-cheesecake-slice-loop.mp4" type="video/mp4"></video><div class="video-overlay top-left"><div class="panel-tag">Freshness is not a feature.<span class="em">It is the whole product.</span></div></div></div></section>
+
+<section class="chapter"><div class="chapter-inner"><div class="chapter-num">II</div><div class="chapter-title">What if Fantasy ran without a single shopfront?</div><div class="chapter-glyph">- &#11045; -</div><div class="chapter-body"><p>Picture one central kitchen, the one Fantasy already knows how to run, producing every cake. Around it, a network of <strong>25 to 40 fridge nodes</strong> placed inside neighbourhood kirana stores and dark-kitchen partners across Pune, each renting shelf-space for a few thousand rupees a month. A customer places an order on a Fantasy website with a four-hour lead time. The kitchen produces fresh, the cake travels to the nearest node, a delivery partner picks it up on a scheduled round, and it reaches the door the same day it was made.</p><p>The freshness story stops being a marketing line and becomes a property of the model. Most cake bought from a display counter today has been sitting one to two days; the customer cannot tell, but the bakery can. When the kitchen and the customer are linked by the order itself, no cake waits days on a shelf. Fantasy delivers a measurably fresher product, and does it at a lower delivered cost than carrying five shopfronts. <em>That is a better cake and a healthier business at the same time.</em></p><p>The piece that makes this future feasible is not the kitchen and not the fridges. It is the layer that teaches a Pune parent to order four hours ahead instead of walking into a shop. A Fantasy website built for the four-hour rhythm, paired with a WhatsApp marketing engine that nudges occasions, reorders, and node-level offers, is the operating system of the new bakery. Without it, the model stays a diagram. With it, the model runs.</p><div class="fb-pipe" role="img" aria-label="Order to doorstep flow: order placed, central kitchen, fridge node, delivery partner, doorstep">
+  <svg viewBox="0 0 760 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <line class="fb-pipe-track" x1="60" y1="45" x2="700" y2="45" />
+    <circle class="fb-pipe-halo fb-pipe-halo-1" cx="60" cy="45" r="10" />
+    <circle class="fb-pipe-halo fb-pipe-halo-2" cx="220" cy="45" r="10" />
+    <circle class="fb-pipe-halo fb-pipe-halo-3" cx="380" cy="45" r="10" />
+    <circle class="fb-pipe-halo fb-pipe-halo-4" cx="540" cy="45" r="10" />
+    <circle class="fb-pipe-halo fb-pipe-halo-5" cx="700" cy="45" r="10" />
+    <circle class="fb-pipe-node" cx="60" cy="45" r="7" />
+    <circle class="fb-pipe-node" cx="220" cy="45" r="7" />
+    <circle class="fb-pipe-node" cx="380" cy="45" r="7" />
+    <circle class="fb-pipe-node" cx="540" cy="45" r="7" />
+    <circle class="fb-pipe-node" cx="700" cy="45" r="7" />
+    <circle class="fb-pipe-dot" r="5" />
+  </svg>
+  <div class="fb-pipe-labels">
+    <span>Order placed</span>
+    <span>Central kitchen</span>
+    <span>Fridge node</span>
+    <span>Delivery partner</span>
+    <span>Doorstep</span>
+  </div>
+</div></div></div></section>
+
+<section class="block" data-block="3" id="panel-3"><div class="video-panel atmos"><video autoplay loop muted playsinline preload="auto"><source src="assets/mobile-A/panel-3-decorators-hands-mobile-A.mp4" media="(max-aspect-ratio: 1/1)" type="video/mp4"><source src="assets/panel-3-decorators-hands-loop.mp4" type="video/mp4"></video><div class="video-overlay top-left"><div class="panel-tag">The hands that pipe it<span class="em">are the hands that send it.</span></div></div></div></section>
+
+<section class="chapter"><div class="chapter-inner"><div class="chapter-num">III</div><div class="chapter-title">A custom web app, built for cakes, ready for the network.</div><div class="chapter-glyph">- &#11045; -</div><div class="chapter-body"><p>The web app is the operating system for the new model. It collects orders four hours ahead, routes each one from the central kitchen to the nearest fridge node, and hands it to a delivery partner on a scheduled round. <em>Every screen below exists to protect freshness, compress cost, and shift the customer from walk-in-and-grab to order-and-receive-fresh.</em></p><div class="feature-buckets"><div class="feature-bucket"><div class="feature-bucket-name">Customer ordering</div><ul><li><strong>Branded customer PWA</strong> - installable on iPhone and Android, no app store</li><li><strong>Custom cake builder</strong> - flavor, size, fondant name, reference photo upload</li><li><strong>Design template library</strong> - Cocomelon, Stitch, Unicorn, festive and corporate themes</li><li><strong>Order now or order for later</strong> - same UI handles tonight's cake and next week's anniversary</li><li><strong>Slot calendar with live capacity</strong> - kitchen load visible per hour, prevents overbooking</li><li><strong>Razorpay checkout</strong> - UPI, cards, EMI, wallets, auto GST invoice</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Central kitchen + fridge network</div><ul><li><strong>Four-hour minimum lead time enforced</strong> - the freshness moat, hard-coded in checkout</li><li><strong>Fulfilment node routing engine</strong> - central kitchen to nearest active fridge by pincode and load</li><li><strong>Fridge node directory</strong> - kirana and dark-store partners onboarded with capacity per fridge</li><li><strong>Live fridge inventory</strong> - which node holds which order, real-time stock and slot occupancy</li><li><strong>Scheduled pickup rounds</strong> - delivery partner sweeps fridge nodes on fixed timetables, not on-demand</li><li><strong>Multi-node architecture</strong> - new kirana fridges plug in within a day, no rebuild</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Freshness loop</div><ul><li><strong>Live order tracking</strong> - confirmed, baking, boxed, at fridge node, out for delivery</li><li><strong>Freshness passport per order</strong> - which kitchen, which baker, which fridge, baked-at timestamp</li><li><strong>Cold-chain timestamps</strong> - kitchen exit, fridge entry, fridge exit logged automatically</li><li><strong>Customer reassurance card</strong> - shows hours since baked at unboxing, never days</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Marketing in the loop</div><ul><li><strong>AI-generated product photos</strong> - on demand, no photographer, fresh creative weekly</li><li><strong>Birthday and anniversary auto-greeter</strong> - AI-personalized, nudges the four-hour pre-order</li><li><strong>Cart abandonment recovery</strong> - WhatsApp and email, 60 and 90-day re-engagement flows</li><li><strong>Customer memory and segmentation</strong> - flavor history, occasion calendar, lifetime value tiers</li></ul></div><div class="feature-bucket"><div class="feature-bucket-name">Operations + analytics</div><ul><li><strong>Admin Kanban and prep sheet</strong> - order queue, daily bake list, fridge-node view</li><li><strong>Daily revenue and P&L by node</strong> - kitchen yield, fridge utilization, delivery cost per order</li><li><strong>SEO, PWA caching, 99.5% uptime</strong> - daily backups, fast even on patchy 4G</li><li><strong>WhatsApp on-call support</strong> - onboarding, training, quarterly business review</li></ul></div></div><div class="fb-arch" role="img" aria-label="System architecture: customer PWA on top, central kitchen and fridge network and delivery layer in the middle, AI content and admin operations on the right, all connected">
+  <div class="fb-arch-grid">
+    <div class="fb-arch-node fb-arch-customer">
+      <div class="fb-arch-icon">&#127968;</div>
+      <div class="fb-arch-label">Customer PWA</div>
+      <div class="fb-arch-sub">orders 4 hours ahead</div>
+    </div>
+    <div class="fb-arch-conn fb-arch-conn-1"></div>
+    <div class="fb-arch-core">
+      <div class="fb-arch-node fb-arch-kitchen">
+        <div class="fb-arch-icon">&#127869;&#65039;</div>
+        <div class="fb-arch-label">Central kitchen</div>
+        <div class="fb-arch-sub">made after order</div>
+      </div>
+      <div class="fb-arch-conn fb-arch-conn-2"></div>
+      <div class="fb-arch-node fb-arch-fridges">
+        <div class="fb-arch-icon">&#10070;&#10070;&#10070;</div>
+        <div class="fb-arch-label">Fridge network</div>
+        <div class="fb-arch-sub">25-40 nodes across Pune</div>
+      </div>
+      <div class="fb-arch-conn fb-arch-conn-3"></div>
+      <div class="fb-arch-node fb-arch-delivery">
+        <div class="fb-arch-icon">&#128692;</div>
+        <div class="fb-arch-label">Delivery</div>
+        <div class="fb-arch-sub">scheduled rounds</div>
+      </div>
+    </div>
+    <div class="fb-arch-conn fb-arch-conn-4"></div>
+    <div class="fb-arch-side">
+      <div class="fb-arch-node fb-arch-ai">
+        <div class="fb-arch-icon">&#10024;</div>
+        <div class="fb-arch-label">AI content</div>
+        <div class="fb-arch-sub">photos, captions, festivals</div>
+      </div>
+      <div class="fb-arch-node fb-arch-admin">
+        <div class="fb-arch-icon">&#128202;</div>
+        <div class="fb-arch-label">Admin + analytics</div>
+        <div class="fb-arch-sub">orders, P&amp;L, freshness logs</div>
+      </div>
+    </div>
+  </div>
+</div></div></div></section>
+
+<section class="block" data-block="4" id="panel-4"><div class="video-panel atmos"><video autoplay loop muted playsinline preload="auto"><source src="assets/mobile-A/panel-4-ai-magic-mobile-A.mp4" media="(max-aspect-ratio: 1/1)" type="video/mp4"><source src="assets/panel-4-ai-magic-loop.mp4" type="video/mp4"></video><div class="video-overlay top-left"><div class="panel-tag">Recipes change with the season,<span class="em">and the kitchen hears about it before the customer does.</span></div></div></div></section>
+
+<section class="chapter"><div class="chapter-inner"><div class="chapter-num">IV</div><div class="chapter-title">Teaching a city to plan four hours ahead.</div><div class="chapter-glyph">- &#11045; -</div><div class="chapter-body"><p>The new model only works if Pune parents learn one small habit: order four hours ahead. Every other piece of the system - the central kitchen, the fridge nodes, the partner network - is already engineered. The single missing variable is consumer behaviour. Marketing is therefore not decoration on this rollout. <strong>It is the structural unlock.</strong> Without a steady drumbeat reaching the right households at the right moments of the week, the freshness advantage stays invisible and the model stays underused. With it, the four-hour window quietly becomes the new normal for designer cakes in Pune.</p><p>Jarvis Daily runs that drumbeat end-to-end on WhatsApp. Four to six broadcasts a month, written and scheduled by us, teach the four-hour habit through festive campaigns, weekend cravings, and seasonal launches. Birthday and anniversary auto-flows reach customers a week ahead, when the decision is actually being made. Cart-abandonment nudges recover orders that stalled mid-checkout. Every customer reply lands inside Fantasy's dashboard as a tagged lead, ready for the team to close. <em>Fantasy approves the calendar; we operate it.</em></p><div class="campaign-grid"><div class="campaign-example"><div class="campaign-title">The 4-Hour Promise</div><div class="campaign-angle">Reframes the lead time as a feature - proof the cake is being made for you, not pulled from a shelf.</div><p class="campaign-broadcast">Hello from Fantasy. Here is something you may not have known about us. When you place an order with Fantasy, your cake does not exist yet. Our central kitchen begins it the moment your order arrives, and it reaches you in just 4 hours. That short wait is the reason every Fantasy cake tastes the way it does. Try it this weekend. Order by 2 PM, celebrate by 6 PM.</p></div><div class="campaign-example"><div class="campaign-title">Made After You Order</div><div class="campaign-angle">Surfaces the always-fresh story as Fantasy's quiet standard, with no comparison to anyone else.</div><p class="campaign-broadcast">A small thing we are proud of at Fantasy. Every cake that leaves our kitchen was made after a parent, a partner, or a friend asked for it. Never before. That is why our buttercream still tastes like cream and our sponge still tastes like the morning. If you have not ordered from us in a while, this is your reminder.</p></div><div class="campaign-example"><div class="campaign-title">Birthday Week Unicorn</div><div class="campaign-angle">Triggers seven days before a saved birthday with a soft nudge plus a designer-cake suggestion.</div><p class="campaign-broadcast">Someone in your home has a birthday next week, and we did not want it to sneak up on you. Our unicorn-and-pastel collection is open for booking, with custom toppers, names piped in gold, and the four-hour fresh promise you already know us for. Reply with the date and the flavour, and we will hold the slot.</p></div></div><ul class="deliverables"><li><strong>WhatsApp Business API setup</strong> + Meta verification + green-tick application</li><li><strong>8 to 10 marketing templates</strong> submitted and approved by Meta</li><li><strong>4 to 6 broadcasts per month</strong> run by us, in your voice</li><li><strong>Festive campaigns</strong> - Diwali, Christmas, Valentine's, Mother's Day, Eid</li><li><strong>Birthday + anniversary auto-trigger flows</strong></li><li><strong>Order, status, and delivery notifications</strong> - automated</li><li><strong>Cart abandonment recovery flow</strong></li><li><strong>Two-way reply handling</strong> - replies land as leads in your dashboard</li><li><strong>60-day and 90-day re-engagement campaigns</strong></li><li><strong>Monthly campaign analytics report</strong></li></ul><div class="fb-chat" role="img" aria-label="WhatsApp marketing example: inbound question, system typing, broadcast send with confirmation">
+  <div class="fb-chat-row left"><div class="fb-chat-bubble fb-chat-in">Cake for Sunday?</div></div>
+  <div class="fb-chat-row left"><div class="fb-chat-typing"><span></span><span></span><span></span></div></div>
+  <div class="fb-chat-row right"><div class="fb-chat-bubble fb-chat-out">Birthday Week Unicorn collection is open. Reply with the date and the flavour, and we will hold the slot.<div class="fb-chat-attach"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><path d="M14 2v6h6"/></svg>Unicorn-cake.jpg</div></div></div>
+  <div class="fb-chat-confirm"><svg width="14" height="14" viewBox="0 0 24 24" style="vertical-align:middle;margin-right:6px;" aria-hidden="true"><polyline class="fb-chat-check" points="4,12 10,18 20,7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" /></svg>Sent &middot; 247 customers</div>
+</div></div></div></section>
+
+<section class="block" data-block="5" id="panel-5"><div class="video-panel atmos"><video autoplay loop muted playsinline preload="auto"><source src="assets/mobile-A/panel-5-birthday-moment-mobile-A.mp4" media="(max-aspect-ratio: 1/1)" type="video/mp4"><source src="assets/panel-5-birthday-moment-loop.mp4" type="video/mp4"></video><div class="video-overlay top-left"><div class="panel-tag">Order at lunch.<span class="em">The candles will be lit on time.</span></div></div></div></section>
+
+<section class="chapter" id="pricing"><div class="chapter-inner"><div class="chapter-num">V</div><div class="chapter-title">What it costs to build this.</div><div class="chapter-glyph">- &#11045; -</div><div class="chapter-body"><p>One budget, two engines. The website is the operational core - it takes the orders, runs the kitchen-to-fridge routing, and proves the freshness. The WhatsApp service is the behavioural unlock - it teaches Pune to order four hours ahead. We bifurcate the numbers so you can see exactly what each engine costs to build and to run.</p><div class="bifurcated-setup"><div class="setup-half"><div class="setup-half-label">Website</div><div class="setup-half-amount">₹3,55,000</div><div class="setup-half-note">Custom build · 8 to 10 weeks · PWA, kitchen routing, fridge inventory, freshness passport, admin dashboard, AI content layer, multi-node architecture.</div></div><div class="setup-half"><div class="setup-half-label">WhatsApp bot setup</div><div class="setup-half-amount">₹20,000</div><div class="setup-half-note">API onboarding · Meta verification · core templates · dashboard integration.</div></div></div><div class="setup-total-line">Total one-time setup: <strong>₹3,75,000</strong> &middot; Excl. 18% GST · Payment 40% kickoff · 30% UAT · 30% go-live and sign-off</div><div class="bifurcated-monthly"><div class="monthly-half"><div class="monthly-half-label">Website retainer</div><div class="monthly-half-amount">₹10,000<span class="per">/month</span></div><ul><li>Maintenance, security, daily backups</li><li>Monthly improvements based on usage</li><li>AI content support - photos, captions</li><li>On-call support during festive rushes</li><li>Quarterly business review</li></ul></div><div class="monthly-half"><div class="monthly-half-label">WhatsApp retainer</div><div class="monthly-half-amount">₹10,000<span class="per">/month</span></div><ul><li>4 to 6 broadcasts per month run by us</li><li>Festive + birthday + anniversary auto-flows</li><li>Cart abandonment recovery</li><li>Two-way reply handling - leads in dashboard</li><li>Monthly campaign analytics</li></ul></div></div><div class="monthly-total-line">Total monthly: <strong>₹20,000/month</strong> &middot; Excl. 18% GST · Starts only after go-live · 30-day notice to exit</div><div class="monthly-cta-row"><a class="cta" href="https://wa.me/919673758777?text=Hi%20Shruti%2C%20Fantasy%20Bakery%20here.%20Let%27s%20start.">Confirm to begin <span class="arrow">&#8594;</span></a></div><div class="terms-fine">Razorpay transaction fees, hosting, AI API usage, and Meta WhatsApp message charges are paid by Fantasy directly to those providers. Estimated combined external bills: ₹6,000 to ₹8,000/month at typical bakery volume, variable with usage. Platform IP retained by Tranquil Veda; data, customer records, and prompts owned entirely by Fantasy Bakery.</div></div></div></section>
+
+<section class="chapter"><div class="chapter-inner"><div class="chapter-num">VI</div><div class="chapter-title">Scope, FAQ, and what each side owns.</div><div class="chapter-glyph">- &#11045; -</div><div class="chapter-body"><p><strong>What is not included in this engagement.</strong> Native iOS or Android apps (future expansion). Multi-city operations beyond Pune (future expansion). A separate kirana-partner mobile app for fridge-node operators (future Phase 2). Direct integration with restaurant-OS platforms (orders flow through admin for now). Razorpay merchant onboarding (Fantasy holds the merchant account directly). Studio photography or content creation outside AI-generated assets.</p><p><strong>Frequent questions.</strong></p><p><em>Why ₹20,000/month when SaaS platforms cost ₹3,000?</em><br/>A SaaS template gives you a generic restaurant page. No central-kitchen routing, no fridge-node inventory, no four-hour freshness passport, no managed WhatsApp campaigns, no path to the kirana-fridge model. Our retainer replaces a part-time marketing manager (₹25,000-30,000/month) and keeps your custom platform running. Stop paying any time and the system still belongs to you.</p><p><em>What does the setup actually cover?</em><br/>Roughly 600 hours of skilled work over 8-10 weeks: design, custom development, AI integration, WhatsApp Business API setup, Meta template approvals, testing, deployment, and onboarding for your team.</p><p><em>How does the kirana-fridge network roll out?</em><br/>The web app is built with multi-fulfilment-point architecture from day one - the data model already understands multiple distribution nodes. We launch with the central kitchen plus the first 5-10 fridge partners. Adding nodes 11 through 40 happens through admin UI without engineering work. The kirana-partner mobile app is a future Phase 2 add-on, not a rebuild.</p><p><em>Who pays for WhatsApp messages and AI API usage?</em><br/>Fantasy pays Meta and OpenAI directly through accounts set up in your name during onboarding. We never resell those bills. Estimated combined external cost: ₹6,000 to ₹8,000/month at typical bakery volume.</p><p><em>What if my volume grows beyond what the retainer covers?</em><br/>The retainer covers up to 500 orders/month of support load. Beyond that, we either tier up the retainer transparently or move you to Phase 2 (multi-kitchen routing engine, designed for higher volume).</p><p><em>Can I see the platform before paying everything?</em><br/>Yes. After kickoff (₹1,50,000), you see working screens within two weeks and a fully working UAT version before the second payment. The third and final payment only happens after you have personally confirmed go-live success.</p><p><strong>Data Ownership and Intellectual Property.</strong></p><div class="fb-ip">
+  <div class="fb-ip-grid">
+    <div class="fb-ip-col">
+      <div class="fb-ip-icon">&#127874;</div>
+      <div class="fb-ip-label">Your data</div>
+      <div class="fb-ip-summary">Customer records, orders, conversations, and analytics. <strong>Belongs entirely to Fantasy.</strong> Full export on demand.</div>
+    </div>
+    <div class="fb-ip-col">
+      <div class="fb-ip-icon">&#9881;&#65039;</div>
+      <div class="fb-ip-label">Our platform</div>
+      <div class="fb-ip-summary">Source code, system prompts, AI instructions, templates, infrastructure. <strong>Licensed to Fantasy.</strong> Tranquil Veda retains IP.</div>
+    </div>
+    <div class="fb-ip-col">
+      <div class="fb-ip-icon">&#128268;</div>
+      <div class="fb-ip-label">Third-party services</div>
+      <div class="fb-ip-summary">Razorpay, Meta WhatsApp, OpenAI, hosting. <strong>Operate under their own terms.</strong> Liability capped at 3 months of fees.</div>
+    </div>
+  </div>
+</div><p><em>Your data is yours.</em> All customer records, order history, transaction logs, WhatsApp conversation history, customer database, and analytics belong entirely to Fantasy Bakery 'n' Patisserie. You receive full administrative access to view, export, and delete this data at any time. Jarvis Daily will not use your customer or order data for any purpose other than operating your platform. On termination, Jarvis Daily provides a complete export within seven business days.</p><p><em>Our platform is ours.</em> The bot software, source code, system prompts, AI instructions, content generation templates, marketing workflows, admin dashboard codebase, and underlying infrastructure remain the intellectual property of Jarvis Daily. Fantasy Bakery is licensing the use of this platform and the operational service around it, not acquiring ownership of the platform itself. This is standard practice for managed software services and protects our ability to keep improving the platform across all clients.</p><p><em>Third-party services operate under their own terms.</em> The platform uses industry-standard third-party services: Razorpay for payments, Meta's WhatsApp Business API for messaging, OpenAI and Google for AI image and text generation, and a cloud hosting provider for infrastructure. Each operates under its own terms and retains records per its own policies. Razorpay records are retained as required under Indian tax and payments regulation, independent of this SOW. Jarvis Daily selects responsible providers but does not warrant third-party conduct or uptime. Total liability for any sub-processor incident is capped at fees paid in the preceding three months.</p></div></div></section>
+
+<section class="block" data-block="6" id="panel-6"><div class="video-panel"><video autoplay loop muted playsinline preload="auto"><source src="assets/mobile-A/panel-6-doorstep-joy-mobile-A.mp4" media="(max-aspect-ratio: 1/1)" type="video/mp4"><source src="assets/panel-6-doorstep-joy-loop.mp4" type="video/mp4"></video><div class="video-overlay bottom"><h2>Ready to begin?</h2><p class="lede">Reply to Shruti directly. We share the project kickoff agreement within 24 hours, and the build clock starts the moment you sign. <strong>shruti@jarvisdaily.com  ·  +91 96737 58777</strong></p><a class="cta" href="https://wa.me/919673758777?text=Hi%20Shruti%2C%20Fantasy%20Bakery%20here.%20Let%27s%20start.">Send a WhatsApp <span class="arrow">&#8594;</span></a><div class="footer-meta">Tranquil Veda Private Limited · Pune, Maharashtra · GSTIN 27AAHCT6956C1Z3 · Brand: Jarvis Daily<br/><a href="mailto:shruti@jarvisdaily.com">shruti@jarvisdaily.com</a> · <a href="https://wa.me/919673758777">+91 96737 58777</a><br/>Prepared 2026-05-09 &middot; Valid until 2026-05-23</div></div></div></section>
+
+<a class="wa-float" href="https://wa.me/919673758777?text=Hi%20Shruti%2C%20Fantasy%20Bakery%20here.%20Let%27s%20start." aria-label="WhatsApp Shruti">
+  <svg viewBox="0 0 24 24" fill="currentColor" width="22" height="22"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.272-.099-.47-.149-.669.15-.198.297-.768.967-.941 1.165-.173.198-.347.223-.644.074-.297-.149-1.255-.462-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.297-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51l-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.626.712.226 1.36.194 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347zM12.05 21.785h-.005a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.825 9.825 0 016.994 2.898 9.821 9.821 0 012.893 6.994c-.003 5.45-4.437 9.884-9.889 9.884zm8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  WhatsApp Shruti
+</a>
+
+<script>
+  (function() {
+    var pubEl = document.querySelector('meta[name="data-published"]');
+    if (!pubEl) return;
+    var pub = new Date(pubEl.getAttribute('content'));
+    var expiry = new Date(pub.getTime() + 30 * 24 * 60 * 60 * 1000);
+    if (new Date() > expiry) {
+      var d = document.createElement('div');
+      d.className = 'expired';
+      d.innerHTML = '<h2>This proposal has expired</h2><p>This proposal was prepared on ' + pub.toDateString() + ' and has reached its 30-day archival window. Please reach out to Shruti for a refreshed version.</p><a href="https://wa.me/919673758777?text=Hi%20Shruti%2C%20Fantasy%20Bakery%20here.%20Let%27s%20start.">WhatsApp Shruti</a>';
+      document.body.appendChild(d);
+    }
+  })();
+</script>
+
+</body>
+</html>

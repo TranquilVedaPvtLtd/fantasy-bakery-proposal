@@ -1,0 +1,14 @@
+# Internal build artifacts - not shipped to GitHub Pages
+BRIEF.md
+PROJECT-LOG.md
+*.log
+*.bak
+.DS_Store
+
+# Source stills + raw videos (large, only the loop + mobile crops are referenced by index.html)
+assets/raw/
+assets/panels/
+cinematic-stills/
+
+# Internal session/build files
+.claude/
