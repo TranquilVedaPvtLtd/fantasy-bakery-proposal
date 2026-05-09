@@ -86,13 +86,13 @@
     {
       "num": "I",
       "title": "The math of brick-and-mortar bakery has stopped working.",
-      "body_html": "<p>The rent on a single Fantasy outlet has moved from <strong>₹50,000</strong> to <strong>₹90,000</strong> a month, and it has not finished climbing. A designer cake still sells at roughly <strong>₹500</strong>, and that number is not flexible. A parent buying a child's birthday cake will not pay ₹900; the social ceiling for a family-occasion cake in Pune sits between ₹500 and ₹700. Across five outlets, the rent gap alone is over <strong>₹2,00,000</strong> of fixed cost a month that the cake price cannot absorb.</p><p>This is not a bad quarter. Rent in Pune moves in one direction. A designer cake's price is anchored to what a household considers reasonable for an occasion. The two lines do not meet again. Every renewal cycle widens the gap, and every new outlet inherits the same arithmetic. The squeeze is structural - it lives in the shape of the business, not in a season or a slowdown.</p><p>The honest read is that the storefront model for designer cake in Pune has eighteen to thirty-six months of viable runway, and the people running Fantasy can already feel it in the monthly numbers. The question worth sitting with is not how to defend the shopfronts. It is what the bakery looks like when the shopfronts are no longer the unit of the business.<br/><em>The format is ending. The bakery does not have to.</em></p>",
+      "body_html": "<p>The rent on a typical Pune designer-cake outlet has climbed from <strong>₹50,000</strong> to <strong>₹90,000</strong> a month over the last few years, and real estate has not finished climbing. Yet a designer cake still sells at roughly <strong>₹500</strong>, and that number is not flexible. A parent buying a child's birthday cake will not pay ₹900; the social ceiling for a family-occasion cake in Pune sits between ₹500 and ₹700. For a five-shopfront bakery, the rent gap alone is over <strong>₹2,00,000</strong> of fixed cost a month that the cake price cannot absorb.</p><p>This is not a bad quarter for the category. Rent in Pune moves in one direction. A designer cake's price is anchored to what a household considers reasonable for an occasion. The two lines do not meet again. Every renewal cycle widens the gap, and every new outlet inherits the same arithmetic. <strong>The squeeze is structural</strong> - it lives in the shape of the brick-and-mortar bakery model, not in a season or a slowdown.</p><p>The honest read is that the storefront model for designer cake in Pune has eighteen to thirty-six months of viable runway, and any operator paying close attention to monthly P&L can feel it. The question worth sitting with is not how to defend the shopfronts. It is what a designer-cake bakery looks like when the shopfronts are no longer the unit of the business.<br/><em>The format is ending. The bakery model itself does not have to.</em></p>",
       "animation": "fb-cost"
     },
     {
       "num": "II",
       "title": "What if Fantasy ran without a single shopfront?",
-      "body_html": "<p>Picture one central kitchen, the one Fantasy already knows how to run, producing every cake. Around it, a network of <strong>25 to 40 fridge nodes</strong> placed inside neighbourhood kirana stores and dark-kitchen partners across Pune, each renting shelf-space for a few thousand rupees a month. A customer places an order on a Fantasy website with a four-hour lead time. The kitchen produces fresh, the cake travels to the nearest node, a delivery partner picks it up on a scheduled round, and it reaches the door the same day it was made.</p><p>The freshness story stops being a marketing line and becomes a property of the model. Most cake bought from a display counter today has been sitting one to two days; the customer cannot tell, but the bakery can. When the kitchen and the customer are linked by the order itself, no cake waits days on a shelf. Fantasy delivers a measurably fresher product, and does it at a lower delivered cost than carrying five shopfronts. <em>That is a better cake and a healthier business at the same time.</em></p><p>The piece that makes this future feasible is not the kitchen and not the fridges. It is the layer that teaches a Pune parent to order four hours ahead instead of walking into a shop. A Fantasy website built for the four-hour rhythm, paired with a WhatsApp marketing engine that nudges occasions, reorders, and node-level offers, is the operating system of the new bakery. Without it, the model stays a diagram. With it, the model runs.</p>",
+      "body_html": "<p>Picture one central kitchen producing every cake fresh after the order arrives. Around it, a network of <strong>25 to 40 fridge nodes</strong> placed inside neighbourhood kirana stores and dark-kitchen partners across Pune, each renting shelf-space for a few thousand rupees a month. A customer places an order on a Fantasy website with a four-hour lead time. The kitchen produces fresh, the cake travels to the nearest node, a delivery partner picks it up on a scheduled round, and it reaches the door the same day it was made.</p><p>The freshness story stops being a marketing line and becomes a property of the model. Most cake bought from a display counter today has been sitting one to two days; the customer cannot tell, but the bakery can. When the kitchen and the customer are linked by the order itself, no cake waits days on a shelf. Fantasy delivers a measurably fresher product, and does it at a lower delivered cost than carrying five shopfronts. <em>That is a better cake and a healthier business at the same time.</em></p><p>The piece that makes this future feasible is not the kitchen and not the fridges. It is the layer that teaches a Pune parent to order four hours ahead instead of walking into a shop. A Fantasy website built for the four-hour rhythm, paired with a WhatsApp marketing engine that nudges occasions, reorders, and node-level offers, is the operating system of the new bakery. Without it, the model stays a diagram. With it, the model runs.</p>",
       "animation": "fb-pipe"
     },
     {
@@ -102,14 +102,33 @@
       "animation": "fb-arch",
       "feature_buckets": [
         {
-          "name": "Customer ordering",
+          "name": "Customer storefront",
           "items": [
-            "<strong>Branded customer PWA</strong> - installable on iPhone and Android, no app store",
-            "<strong>Custom cake builder</strong> - flavor, size, fondant name, reference photo upload",
+            "<strong>Branded customer PWA</strong> - installable on iPhone and Android, no app store needed",
+            "<strong>Full menu catalog</strong> - cakes, cheesecakes, pastries, croissants, cookies with category filters",
+            "<strong>Filter by occasion</strong> - birthday, anniversary, wedding, festive, baby shower",
+            "<strong>Filter by dietary preference</strong> - eggless, vegan, sugar-free, nut-free",
+            "<strong>Search with auto-suggest</strong> - typo-tolerant, learns popular terms",
             "<strong>Design template library</strong> - Cocomelon, Stitch, Unicorn, festive and corporate themes",
-            "<strong>Order now or order for later</strong> - same UI handles tonight's cake and next week's anniversary",
+            "<strong>Bestsellers, new arrivals, seasonal collections</strong> - Diwali, Christmas, Valentine's, Eid",
+            "<strong>Customer reviews and 5-star ratings</strong> - moderated, with photo uploads",
+            "<strong>Multi-image gallery per product</strong> - 360-degree angle if relevant",
+            "<strong>Order now or order for later</strong> - same UI handles tonight's cake and next week's anniversary"
+          ]
+        },
+        {
+          "name": "Slot booking + checkout",
+          "items": [
             "<strong>Slot calendar with live capacity</strong> - kitchen load visible per hour, prevents overbooking",
-            "<strong>Razorpay checkout</strong> - UPI, cards, EMI, wallets, auto GST invoice"
+            "<strong>Future date booking</strong> - up to 30 days ahead",
+            "<strong>Delivery zone validation</strong> - by pincode, with fallback messaging if outside zone",
+            "<strong>Address book with multiple saved addresses</strong> - home, office, parents",
+            "<strong>Google Maps address autocomplete</strong> - reduces address errors",
+            "<strong>Pickup option</strong> - in-store or fridge-node collection",
+            "<strong>Razorpay checkout</strong> - UPI, cards, EMI, wallets, net banking",
+            "<strong>Saved payment methods</strong> - tokenized for one-tap reorder",
+            "<strong>Discount code application</strong> - rule-engine for percentage, flat, BOGO",
+            "<strong>GST-compliant invoice generation</strong> - auto-emailed PDF receipt"
           ]
         },
         {
@@ -118,36 +137,101 @@
             "<strong>Four-hour minimum lead time enforced</strong> - the freshness moat, hard-coded in checkout",
             "<strong>Fulfilment node routing engine</strong> - central kitchen to nearest active fridge by pincode and load",
             "<strong>Fridge node directory</strong> - kirana and dark-store partners onboarded with capacity per fridge",
+            "<strong>Per-node menu customization</strong> - different stock per fridge, per neighbourhood",
+            "<strong>Per-node operating hours and holidays</strong> - kirana store schedule independent of kitchen",
             "<strong>Live fridge inventory</strong> - which node holds which order, real-time stock and slot occupancy",
-            "<strong>Scheduled pickup rounds</strong> - delivery partner sweeps fridge nodes on fixed timetables, not on-demand",
-            "<strong>Multi-node architecture</strong> - new kirana fridges plug in within a day, no rebuild"
+            "<strong>Scheduled pickup rounds</strong> - delivery partner sweeps fridge nodes on fixed timetables",
+            "<strong>Multi-node architecture</strong> - new kirana fridges plug in within a day, no rebuild required"
           ]
         },
         {
-          "name": "Freshness loop",
+          "name": "Freshness loop + tracking",
           "items": [
-            "<strong>Live order tracking</strong> - confirmed, baking, boxed, at fridge node, out for delivery",
+            "<strong>Live order tracking page</strong> - confirmed, baking, boxed, at fridge node, out for delivery",
+            "<strong>Stage-by-stage push notifications</strong> - browser + email at each milestone",
             "<strong>Freshness passport per order</strong> - which kitchen, which baker, which fridge, baked-at timestamp",
             "<strong>Cold-chain timestamps</strong> - kitchen exit, fridge entry, fridge exit logged automatically",
-            "<strong>Customer reassurance card</strong> - shows hours since baked at unboxing, never days"
+            "<strong>Customer reassurance card</strong> - shows hours since baked at unboxing, never days",
+            "<strong>Customer feedback prompt</strong> - automatic ask after delivery, NPS scored",
+            "<strong>ETA updates</strong> - live delivery rider position once dispatched"
           ]
         },
         {
-          "name": "Marketing in the loop",
+          "name": "AI content engine",
           "items": [
-            "<strong>AI-generated product photos</strong> - on demand, no photographer, fresh creative weekly",
-            "<strong>Birthday and anniversary auto-greeter</strong> - AI-personalized, nudges the four-hour pre-order",
+            "<strong>AI-generated product photos</strong> - on demand, brand-styled, fresh creative weekly",
+            "<strong>AI-written product descriptions</strong> - tone-matched, SEO-optimized, instant",
+            "<strong>AI-refreshed seasonal banners</strong> - Diwali, Christmas, Valentine's, Mother's Day, Eid",
+            "<strong>AI-generated festival creatives</strong> - social posts ready to copy and share",
+            "<strong>AI-personalized birthday and anniversary messages</strong> - per customer, per occasion",
+            "<strong>AI-optimized product titles</strong> - improves discoverability in search",
+            "<strong>AI social media captions</strong> - ready-to-post for Instagram, Facebook"
+          ]
+        },
+        {
+          "name": "Customer relationship",
+          "items": [
+            "<strong>OTP-based account creation</strong> - one-tap signup, no passwords",
+            "<strong>Order history with one-click reorder</strong> - last cake, fastest path",
+            "<strong>Wishlist + favourites</strong> - save for next occasion",
+            "<strong>Birthday and anniversary memory</strong> - auto-reminders seven days ahead",
+            "<strong>Customer database with segmentation</strong> - flavour history, lifetime value tiers, churn risk",
             "<strong>Cart abandonment recovery</strong> - WhatsApp and email, 60 and 90-day re-engagement flows",
-            "<strong>Customer memory and segmentation</strong> - flavor history, occasion calendar, lifetime value tiers"
+            "<strong>Time-based offers</strong> - weekend special, festive surge, midnight delivery",
+            "<strong>Customer-segment-based offers</strong> - new customer vs loyal vs lapsed"
           ]
         },
         {
-          "name": "Operations + analytics",
+          "name": "Admin operations",
           "items": [
-            "<strong>Admin Kanban and prep sheet</strong> - order queue, daily bake list, fridge-node view",
-            "<strong>Daily revenue and P&L by node</strong> - kitchen yield, fridge utilization, delivery cost per order",
-            "<strong>SEO, PWA caching, 99.5% uptime</strong> - daily backups, fast even on patchy 4G",
-            "<strong>WhatsApp on-call support</strong> - onboarding, training, quarterly business review"
+            "<strong>Admin Kanban order queue</strong> - drag-and-drop status updates",
+            "<strong>Daily prep sheet auto-generated</strong> - tomorrow's bake list, by node, by ingredient",
+            "<strong>One-click order status updates</strong> - bulk operations supported",
+            "<strong>Multi-node inventory toggle</strong> - mark items in/out of stock per fridge",
+            "<strong>Discount code creator with rules engine</strong> - percent, flat, BOGO, expiry, usage cap",
+            "<strong>Product catalog manager</strong> - inline AI photo generator built into editor",
+            "<strong>Staff accounts with role-based permissions</strong> - kitchen staff, delivery, admin, marketing",
+            "<strong>Customer database search and segmentation</strong> - find any customer in two clicks"
+          ]
+        },
+        {
+          "name": "Analytics + reporting",
+          "items": [
+            "<strong>Daily revenue dashboard</strong> - by node, by hour, by category",
+            "<strong>Daily P&L by fridge node</strong> - kitchen yield, fridge utilization, delivery cost per order",
+            "<strong>Popular items report</strong> - 7-day, 30-day, by node",
+            "<strong>Peak hours analysis</strong> - inform fridge stocking and slot capacity",
+            "<strong>Customer cohort retention</strong> - who comes back at 30, 60, 90 days",
+            "<strong>Excel and CSV export for any report</strong> - feed into external accounting",
+            "<strong>Custom date range reports</strong> - any period, any combination of filters",
+            "<strong>Daily revenue summary email to owner</strong> - end-of-day digest in your inbox"
+          ]
+        },
+        {
+          "name": "SEO + integrations",
+          "items": [
+            "<strong>SEO-optimized URLs and meta tags</strong> - per product, per category",
+            "<strong>Open Graph tags</strong> - rich social sharing on WhatsApp, Instagram, Facebook",
+            "<strong>Google Analytics integration</strong> - traffic, conversions, behaviour flow",
+            "<strong>Facebook Pixel integration</strong> - retargeting + conversion tracking",
+            "<strong>Google Business Profile integration</strong> - reviews surface on website",
+            "<strong>Local SEO setup</strong> - all outlet zones + fridge node pincodes optimized",
+            "<strong>Sitemap and robots.txt</strong> - submitted to Google + Bing"
+          ]
+        },
+        {
+          "name": "Performance + reliability + support",
+          "items": [
+            "<strong>SSL certificate + HTTPS everywhere</strong> - never an unencrypted page",
+            "<strong>CDN-backed image delivery</strong> - sub-second loads in Pune",
+            "<strong>PWA caching</strong> - works on patchy 4G, instant repeat-visit",
+            "<strong>Daily database backups</strong> - 30-day retention, point-in-time recovery",
+            "<strong>99.5% uptime SLA</strong> - monitored 24x7, alerts on degradation",
+            "<strong>DDoS protection</strong> - Cloudflare-grade edge filtering",
+            "<strong>WhatsApp on-call support</strong> - 24-hour response SLA",
+            "<strong>Onboarding session</strong> + staff training + video tutorials",
+            "<strong>Quarterly business review</strong> - data-driven recommendations, roadmap refresh",
+            "<strong>Monthly improvements</strong> based on real usage in your kitchen"
           ]
         }
       ]
@@ -175,16 +259,24 @@
         }
       ],
       "deliverables": [
-        "<strong>WhatsApp Business API setup</strong> + Meta verification + green-tick application",
-        "<strong>8 to 10 marketing templates</strong> submitted and approved by Meta",
-        "<strong>4 to 6 broadcasts per month</strong> run by us, in your voice",
-        "<strong>Festive campaigns</strong> - Diwali, Christmas, Valentine's, Mother's Day, Eid",
-        "<strong>Birthday + anniversary auto-trigger flows</strong>",
-        "<strong>Order, status, and delivery notifications</strong> - automated",
-        "<strong>Cart abandonment recovery flow</strong>",
-        "<strong>Two-way reply handling</strong> - replies land as leads in your dashboard",
-        "<strong>60-day and 90-day re-engagement campaigns</strong>",
-        "<strong>Monthly campaign analytics report</strong>"
+        "<strong>WhatsApp Business API setup</strong> - infrastructure, webhook integration, sandbox to production",
+        "<strong>Meta Business Manager verification</strong> - identity proof, business documentation",
+        "<strong>Green-tick application + follow-up</strong> - we manage the full Meta review cycle",
+        "<strong>8 to 10 marketing templates submitted and approved</strong> - festive, birthday, abandoned cart, re-engagement",
+        "<strong>4 to 6 marketing broadcasts per month</strong> - planned, written, scheduled by us",
+        "<strong>Festive campaign calendar</strong> - Diwali, Christmas, Valentine's, Mother's Day, Eid, Holi, Raksha Bandhan",
+        "<strong>Birthday auto-trigger flow</strong> - reaches customer 7 days ahead, reminds 2 days ahead",
+        "<strong>Anniversary auto-trigger flow</strong> - same cadence, occasion-tuned creative",
+        "<strong>Order confirmation + status notifications</strong> - confirmed, baking, boxed, out for delivery",
+        "<strong>Delivery completion message</strong> - with feedback request and reorder prompt",
+        "<strong>Cart abandonment recovery flow</strong> - 1-hour and 24-hour follow-up sequences",
+        "<strong>60-day and 90-day re-engagement campaigns</strong> - lapsed customer winback",
+        "<strong>Two-way reply handling</strong> - customer replies tagged as leads in your admin dashboard",
+        "<strong>Customer database synchronization</strong> - WhatsApp opt-ins automatically updated",
+        "<strong>Click-tracking on all WhatsApp links</strong> - know which broadcast drove which order",
+        "<strong>Monthly campaign analytics report</strong> - open rates, click rates, conversion, revenue per send",
+        "<strong>A/B testing on broadcast variants</strong> - copy, image, send time tested before scale",
+        "<strong>Quarterly campaign-strategy review</strong> with you and your team"
       ]
     },
     {
