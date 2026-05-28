@@ -12,3 +12,9 @@ cinematic-stills/
 
 # Internal session/build files
 .claude/
+# ralf runtime artefacts
+ralf/progress.md
+ralf/state.json
+ralf/done.flag
+ralf/HALT
+ralf/evidence/
