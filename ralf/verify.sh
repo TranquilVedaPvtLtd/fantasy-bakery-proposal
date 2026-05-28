@@ -40,14 +40,16 @@ check_absent() {
 
 # Pricing reflects locked decisions
 check 'Vinayak'                          "addresses Vinayak"
-check '3,55,000|3,75,000|₹3,55,000'      "setup price line present"
+check '₹3,95,000|3,95,000'                "setup total ₹3,95,000 present"
+check '3,75,000'                          "platform line ₹3,75,000 present"
+check '₹20,000'                           "WhatsApp bot setup ₹20,000 present"
 check '15,000|₹15,000'                   "platform retainer ₹15K present (was ₹10K)"
 check '25,000|₹25,000'                   "total monthly ₹25K present"
 check '12 weeks|twelve weeks|12-week'    "timeline 12 weeks present"
 check 'AI Cake Studio|Fantasy Cake Studio' "AI Cake Studio mentioned"
 check 'custom cake'                       "custom cake positioning present"
 check 'job card'                          "job card mentioned"
-check '3 iteration|three iteration|3-iteration|three-time|3 times|three times' "iteration cap mentioned"
+check '3 iteration|three iteration|3-iteration|three-time|3 times|three times|3 customisation|three customisation|3 revision|three revision|hard cap' "iteration cap mentioned"
 check 'shruti@jarvisdaily.com'            "Shruti email present"
 check '9673758777'                        "Shruti phone present"
 
